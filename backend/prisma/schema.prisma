@@ -14,26 +14,12 @@ model User {
   name       String?
   isAdmin    Boolean   @default(false)
 
-
-  tokens     Token[]
-
+  cart       Cart      @relation(fields: [cartId], references: [id])
+  cartId     Int       @unique
   }
 
-model Token {
+model Cart {
   id         Int       @id @default(autoincrement())
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-  type       TokenType
-  emailToken String?   @unique 
-  valid      Boolean   @default(true)
-  expiration DateTime
-
-
-  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
-}
-
-enum TokenType {
-  EMAIL
-  API
+  user       User?
+  
 }
