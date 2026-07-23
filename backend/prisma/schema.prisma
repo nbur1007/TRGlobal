@@ -7,40 +7,151 @@ datasource db {
   provider = "postgresql"
 }
 
-model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  password  String    
-  name      String?
-  isAdmin   Boolean   @default(false)
 
-  cart      Cart      @relation(fields: [cartId], references: [id])
-  cartId    Int       @unique
-  }
+// ---------------------------------------------------------------------------
+// Enums (native Postgres enum types)
+// ---------------------------------------------------------------------------
 
-model Product {
-  id        Int       @id @default(autoincrement())
-  
+enum Role {
+  CUSTOMER
+  ADMIN
 }
 
+enum OrderStatus {
+  PENDING
+  SHIPPED
+  CANCELLED
+}
+
+// ---------------------------------------------------------------------------
+// Users & auth
+// ---------------------------------------------------------------------------
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  name         String?
+  role         Role     @default(CUSTOMER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  cart   Cart?
+  orders Order[]
+
+  @@map("users")
+}
+
+// ---------------------------------------------------------------------------
+// Catalog
+// ---------------------------------------------------------------------------
+
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          String   @id @default(uuid()) @db.Uuid
+  name        String
+  description String?
+  price       Decimal  @db.Decimal(10, 2)
+  stock       Int      @default(0)
+  imageUrl    String?
+  categoryId  String   @db.Uuid
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Restrict: deleting a category that still has products is a 409.
+  // Admin must reassign or delete the products first.
+  category   Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+
+  @@index([categoryId])
+  @@index([name])
+  @@map("products")
+}
+
+// ---------------------------------------------------------------------------
+// Cart (live data — always reflects current product state)
+// ---------------------------------------------------------------------------
+
 model Cart {
-  id        Int       @id @default(autoincrement())
-  user      User?
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @unique @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user  User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items CartItem[]
+
+  @@map("carts")
 }
 
 model CartItem {
-  id        Int       @id @default(autoincrement())
+  id        String   @id @default(uuid()) @db.Uuid
+  cartId    String   @db.Uuid
+  productId String   @db.Uuid
+  quantity  Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // One row per product per cart — "add to cart" increments quantity
+  // instead of inserting a duplicate. Use prisma.cartItem.upsert().
+  @@unique([cartId, productId])
+  @@index([productId])
+  @@map("cart_items")
 }
 
-model Order{
-  id        Int       @id @default(autoincrement())
+// ---------------------------------------------------------------------------
+// Orders (immutable snapshot — never read live product data)
+// ---------------------------------------------------------------------------
+
+model Order {
+  id        String      @id @default(uuid()) @db.Uuid
+  userId    String      @db.Uuid
+  status    OrderStatus @default(PENDING)
+  total     Decimal     @db.Decimal(12, 2)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Restrict)
+  items OrderItem[]
+
+  @@index([userId, createdAt])
+  @@index([status])
+  @@map("orders")
 }
 
-model OrderItem{
-  id        Int       @id @default(autoincrement())
-}
+model OrderItem {
+  id      String @id @default(uuid()) @db.Uuid
+  orderId String @db.Uuid
 
-model Category {
-  id        Int       @id @default(autoincrement())
-  name      String    
+  // Nullable link back to the catalog: kept for reporting, but the order
+  // must remain readable if the product is later deleted.
+  productId String? @db.Uuid
+
+  // Snapshot fields — copied at checkout, never updated afterwards.
+  productName String
+  unitPrice   Decimal @db.Decimal(10, 2)
+  quantity    Int
+  lineTotal   Decimal @db.Decimal(12, 2)
+
+  order   Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@index([productId])
+  @@map("order_items")
 }
