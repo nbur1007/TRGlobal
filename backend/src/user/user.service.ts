@@ -27,14 +27,14 @@ export class UserService {
             throw new BadRequestException('Email is already registered.');
         }
 
-        const password = encodePassword(createUserDto.passwordHash);
+        let password = encodePassword(createUserDto.passwordHash);
 
         try{
             await this.prismaService.user.create({
             data:{
                 name: createUserDto.name,
                 email: createUserDto.email,
-                passwordHash: password
+                passwordHash: password,
             }
         });
         }catch(err){
