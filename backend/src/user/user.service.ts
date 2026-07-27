@@ -47,10 +47,10 @@ export class UserService {
     }
   }
 
-  async findUserAuth(id: string) {
+  async findUserAuth(email: string) {
     const user = await this.prismaService.user.findFirst({
       where: {
-        id: id,
+        email: email,
       },
     });
 
@@ -82,7 +82,7 @@ export class UserService {
 
     console.log(emailAttempt);
     if (emailAttempt != null) {
-      throw new BadRequestException('Email is already registered.');
+      throw new HttpException('Email is already registered.', HttpStatus.CONFLICT);
     }
 
     let password = encodePassword(adminCreateUserDto.password);
@@ -120,7 +120,7 @@ export class UserService {
         data: { role: role },
       });
     } catch (err) {
-      throw new BadRequestException('This user does not exist.')
+      throw new HttpException('This user does not exist.', HttpStatus.NOT_FOUND);
     }
   }
 
