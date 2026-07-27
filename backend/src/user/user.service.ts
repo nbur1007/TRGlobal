@@ -54,5 +54,11 @@ export class UserService {
     return user;
   }
 
-  createAdmin(adminCreateUserDto: AdminCreateUserDto) {}
+  async createAdmin(adminCreateUserDto: AdminCreateUserDto) {
+
+  }
+
+  async deleteUser(email: string) {
+    
+  }
 }

@@ -3,11 +3,13 @@ import { AuthService } from './auth.service';
 import { LocalGuard } from './guards/local.guard';
 import type { Request } from 'express';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { Public } from './guards/public.decorator';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @Public()
   @Post('login')
   @UseGuards(LocalGuard)
   login(@Req() req: Request) {
