@@ -12,10 +12,12 @@ import {
 import { UserDto } from './dto/User.dto';
 import { UserService } from './user.service';
 import { AdminDto } from './dto/Admin.dto';
+import { ExistingUserDto } from './dto/ExistingUser.dto';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
 import type { Request } from 'express';
+
 
 @Controller('user')
 export class UserController {
@@ -31,11 +33,18 @@ export class UserController {
   @Delete('delete_self')
   @Roles(Role.ADMIN, Role.CUSTOMER)
   @UsePipes(ValidationPipe)
-  deleteSelf(@Req() req: Request){
-    const user = req.user as { sub: string; email: string; role: Role };
-    return this.userService.deleteUser(user.sub);
+  deleteSelf(@Req() req: Request) {
+    const user = req.user as { id: string; email: string; role: Role };
+    return this.userService.deleteUser(user.id);
   }
 
+  @Get('me')
+  @Roles(Role.ADMIN, Role.CUSTOMER)
+  @UsePipes(ValidationPipe)
+  getSelf(@Req() req: Request) {
+    const user = req.user as { id: string; email: string; role: Role };
+    return this.userService.findUser(user.id);
+  }
 
   @Post('create_admin')
   @UsePipes(ValidationPipe)
@@ -47,28 +56,28 @@ export class UserController {
   @Delete('delete_user')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  deleteUser(@Body() user: UserDto){
+  deleteUser(@Body() user: ExistingUserDto) {
     return this.userService.deleteUser(user.id);
   }
 
   @Get('list_by_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  listUsers(@Body() user: AdminDto){
+  listUsers(@Body() user: AdminDto) {
     return this.userService.listByRole(user.role);
   }
 
   @Get('all_users')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  listAll(){
+  listAll() {
     return this.userService.listAll();
   }
 
   @Patch('update_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  promoteUser(@Body() user: AdminDto){
+  promoteUser(@Body() user: ExistingUserDto) {
     return this.userService.updateRole(user.id, user.role);
   }
 }

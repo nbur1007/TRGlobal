@@ -1,7 +1,11 @@
-import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsUUID, MinLength } from 'class-validator';
 import { Role } from 'generated/prisma/enums';
 
-export class AdminDto {
+export class ExistingUserDto {
+  @IsUUID()
+  @IsNotEmpty()
+  id!: string;
+
   @IsNotEmpty()
   @MinLength(2)
   name!: string;
@@ -14,6 +18,5 @@ export class AdminDto {
   @MinLength(10)
   password!: string;
 
-  @IsNotEmpty()
   role!: Role;
 }

@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  HttpException,
+  HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
@@ -27,7 +29,7 @@ export class UserService {
 
     console.log(emailAttempt);
     if (emailAttempt != null) {
-      throw new BadRequestException('Email is already registered.');
+      throw new HttpException('Email is already registered.', HttpStatus.CONFLICT);
     }
 
     let password = encodePassword(createUserDto.password);
@@ -45,11 +47,22 @@ export class UserService {
     }
   }
 
-  async findUser(email: string) {
+  async findUserAuth(id: string) {
     const user = await this.prismaService.user.findFirst({
       where: {
-        email: email,
+        id: id,
       },
+    });
+
+    return user;
+  }
+
+  async findUser(id: string) {
+    const user = await this.prismaService.user.findFirst({
+      where: {
+        id: id,
+      },
+      select: { id: true, email: true, name: true, role: true, createdAt: true },
     });
 
     return user;
@@ -96,7 +109,7 @@ export class UserService {
         },
       });
     } catch (err) {
-      throw new BadRequestException('This user does not exist.');
+      throw new HttpException('This user does not exist.', HttpStatus.NOT_FOUND);
     }
   }
 
@@ -113,15 +126,21 @@ export class UserService {
 
   async listByRole(role: Role) {
     try {
-      await this.prismaService.user.findMany({
-        where: {role: role}
+      const userList = await this.prismaService.user.findMany({
+        where: {role: role},
+        select: { id: true, email: true, name: true, role: true, createdAt: true },
     })
+      return userList;
     } catch (err) {
       throw new InternalServerErrorException(err)
     }
   }
 
   async listAll(){
-    await this.prismaService.user.findMany()
+    const userList = await this.prismaService.user.findMany({
+      select: { id: true, email: true, name: true, role: true, createdAt: true },
+    })
+
+    return userList;
   }
 }

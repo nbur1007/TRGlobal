@@ -13,7 +13,7 @@ export class AuthService {
   ) {}
 
   async validateUser({ email, password }: AuthPayLoadDto) {
-    const userDB = await this.userService.findUser(email);
+    const userDB = await this.userService.findUserAuth(email);
     if (userDB && comparePasswords(password, userDB.passwordHash)) {
       const { passwordHash, ...user } = userDB;
       return user;
@@ -24,7 +24,7 @@ export class AuthService {
   login(user: { id: string; email: string; role: Role }) {
     return {
       access_token: this.jwtService.sign({
-        sub: user.id,
+        id: user.id,
         email: user.email,
         role: user.role,
       }),
