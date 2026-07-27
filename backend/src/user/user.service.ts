@@ -3,16 +3,16 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { CreateUserDto } from './dto/CreateUser.dto';
+import { UserDto } from './dto/User.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
-import { AdminCreateUserDto } from './dto/AdminCreateUser.dto';
+import { AdminDto } from './dto/Admin.dto';
 
 @Injectable()
 export class UserService {
   constructor(private prismaService: PrismaService) {}
 
-  async createUser(createUserDto: CreateUserDto) {
+  async createUser(createUserDto: UserDto) {
     let emailAttempt;
     try {
       emailAttempt = await this.prismaService.user.findFirst({
@@ -54,7 +54,7 @@ export class UserService {
     return user;
   }
 
-  async createAdmin(adminCreateUserDto: AdminCreateUserDto) {
+  async createAdmin(adminCreateUserDto: AdminDto) {
     let emailAttempt;
     try {
       emailAttempt = await this.prismaService.user.findFirst({
@@ -97,5 +97,9 @@ export class UserService {
     } catch (err) {
       throw new BadRequestException('This user does not exist.');
     }
+  }
+
+  async listUsers(user: AdminDto){
+    
   }
 }
