@@ -33,7 +33,7 @@ export class UserController {
 
   @Delete('delete_user')
   @Roles(Role.ADMIN)
-  deleteUser(){
-
+  deleteUser(@Body() user: CreateUserDto){
+    return this.userService.deleteUser(user.email)
   }
 }
