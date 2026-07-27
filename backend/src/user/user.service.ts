@@ -1,14 +1,12 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { UserDto } from './dto/User.dto';
+import { UserDto, AdminDto } from './dto/User.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
-import { AdminDto } from './dto/Admin.dto';
 import { Role } from 'generated/prisma/enums';
 
 @Injectable()
@@ -29,7 +27,10 @@ export class UserService {
 
     console.log(emailAttempt);
     if (emailAttempt != null) {
-      throw new HttpException('Email is already registered.', HttpStatus.CONFLICT);
+      throw new HttpException(
+        'Email is already registered.',
+        HttpStatus.CONFLICT,
+      );
     }
 
     let password = encodePassword(createUserDto.password);
@@ -62,7 +63,13 @@ export class UserService {
       where: {
         id: id,
       },
-      select: { id: true, email: true, name: true, role: true, createdAt: true },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
     });
 
     return user;
@@ -82,7 +89,10 @@ export class UserService {
 
     console.log(emailAttempt);
     if (emailAttempt != null) {
-      throw new HttpException('Email is already registered.', HttpStatus.CONFLICT);
+      throw new HttpException(
+        'Email is already registered.',
+        HttpStatus.CONFLICT,
+      );
     }
 
     let password = encodePassword(adminCreateUserDto.password);
@@ -109,7 +119,10 @@ export class UserService {
         },
       });
     } catch (err) {
-      throw new HttpException('This user does not exist.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'This user does not exist.',
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
@@ -120,26 +133,41 @@ export class UserService {
         data: { role: role },
       });
     } catch (err) {
-      throw new HttpException('This user does not exist.', HttpStatus.NOT_FOUND);
+      throw new HttpException(
+        'This user does not exist.',
+        HttpStatus.NOT_FOUND,
+      );
     }
   }
 
   async listByRole(role: Role) {
     try {
       const userList = await this.prismaService.user.findMany({
-        where: {role: role},
-        select: { id: true, email: true, name: true, role: true, createdAt: true },
-    })
+        where: { role: role },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+          createdAt: true,
+        },
+      });
       return userList;
     } catch (err) {
-      throw new InternalServerErrorException(err)
+      throw new InternalServerErrorException(err);
     }
   }
 
-  async listAll(){
+  async listAll() {
     const userList = await this.prismaService.user.findMany({
-      select: { id: true, email: true, name: true, role: true, createdAt: true },
-    })
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        role: true,
+        createdAt: true,
+      },
+    });
 
     return userList;
   }

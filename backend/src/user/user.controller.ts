@@ -9,15 +9,17 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { UserDto } from './dto/User.dto';
+import {
+  UserDto,
+  AdminDto,
+  UpdateUserDto,
+  DeleteUserDto,
+} from './dto/User.dto';
 import { UserService } from './user.service';
-import { AdminDto } from './dto/Admin.dto';
-import { ExistingUserDto } from './dto/ExistingUser.dto';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
 import type { Request } from 'express';
-
 
 @Controller('user')
 export class UserController {
@@ -56,7 +58,7 @@ export class UserController {
   @Delete('delete_user')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  deleteUser(@Body() user: ExistingUserDto) {
+  deleteUser(@Body() user: DeleteUserDto) {
     return this.userService.deleteUser(user.id);
   }
 
@@ -77,7 +79,7 @@ export class UserController {
   @Patch('update_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
-  promoteUser(@Body() user: ExistingUserDto) {
+  promoteUser(@Body() user: UpdateUserDto) {
     return this.userService.updateRole(user.id, user.role);
   }
 }
