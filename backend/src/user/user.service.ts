@@ -25,7 +25,6 @@ export class UserService {
       throw new InternalServerErrorException(err);
     }
 
-    console.log(emailAttempt);
     if (emailAttempt != null) {
       throw new HttpException(
         'Email is already registered.',
@@ -87,7 +86,6 @@ export class UserService {
       throw new InternalServerErrorException(err);
     }
 
-    console.log(emailAttempt);
     if (emailAttempt != null) {
       throw new HttpException(
         'Email is already registered.',
