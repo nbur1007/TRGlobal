@@ -1,5 +1,5 @@
 export class AuthPayLoadDto {
-    email!: string;
+  email!: string;
 
-    password!: string;
+  password!: string;
 }
