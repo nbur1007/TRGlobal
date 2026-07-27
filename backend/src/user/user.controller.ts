@@ -1,9 +1,9 @@
 import {
-  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
+  Patch,
   Post,
   Req,
   UsePipes,
@@ -28,15 +28,12 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Public()
   @Delete('delete_self')
+  @Roles(Role.ADMIN, Role.CUSTOMER)
   @UsePipes(ValidationPipe)
-  deleteSelf(@Body() user: UserDto, @Req() req: Request){
-    if(user === req.user ){
-      return this.userService.deleteUser(user.email);
-    } else {
-      throw new BadRequestException('You cannot delete other users, only yourself.')
-    }
+  deleteSelf(@Req() req: Request){
+    const user = req.user as { sub: string; email: string; role: Role };
+    return this.userService.deleteUser(user.sub);
   }
 
 
@@ -51,13 +48,27 @@ export class UserController {
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   deleteUser(@Body() user: UserDto){
-    return this.userService.deleteUser(user.email);
+    return this.userService.deleteUser(user.id);
   }
 
-  @Get('list')
+  @Get('list_by_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   listUsers(@Body() user: AdminDto){
-    return this.userService.listUsers(user);
+    return this.userService.listByRole(user.role);
+  }
+
+  @Get('all_users')
+  @UsePipes(ValidationPipe)
+  @Roles(Role.ADMIN)
+  listAll(){
+    return this.userService.listAll();
+  }
+
+  @Patch('update_role')
+  @UsePipes(ValidationPipe)
+  @Roles(Role.ADMIN)
+  promoteUser(@Body() user: AdminDto){
+    return this.userService.updateRole(user.id, user.role);
   }
 }

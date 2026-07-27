@@ -7,6 +7,7 @@ import { UserDto } from './dto/User.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
 import { AdminDto } from './dto/Admin.dto';
+import { Role } from 'generated/prisma/enums';
 
 @Injectable()
 export class UserService {
@@ -79,7 +80,7 @@ export class UserService {
           name: adminCreateUserDto.name,
           email: adminCreateUserDto.email,
           passwordHash: password,
-          role: adminCreateUserDto.role
+          role: adminCreateUserDto.role,
         },
       });
     } catch (err) {
@@ -87,19 +88,40 @@ export class UserService {
     }
   }
 
-  async deleteUser(email: string) {
+  async deleteUser(id: string) {
     try {
-      const deleteUser = await this.prismaService.user.delete({
-      where: {
-        email: email
-      },
-      }); 
+      await this.prismaService.user.delete({
+        where: {
+          id: id,
+        },
+      });
     } catch (err) {
       throw new BadRequestException('This user does not exist.');
     }
   }
 
-  async listUsers(user: AdminDto){
-    
+  async updateRole(id: string, role: Role) {
+    try {
+      await this.prismaService.user.update({
+        where: { id: id },
+        data: { role: role },
+      });
+    } catch (err) {
+      throw new BadRequestException('This user does not exist.')
+    }
+  }
+
+  async listByRole(role: Role) {
+    try {
+      await this.prismaService.user.findMany({
+        where: {role: role}
+    })
+    } catch (err) {
+      throw new InternalServerErrorException(err)
+    }
+  }
+
+  async listAll(){
+    await this.prismaService.user.findMany()
   }
 }
