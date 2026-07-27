@@ -35,37 +35,140 @@ async function main() {
     where: { name: 'Electronics' },
     update: {},
     create: {
-        name: 'Electronics',
-        slug: 'electronics',
+      name: 'Electronics',
+      slug: 'electronics',
     },
-  })
+  });
 
   const clothing = await prisma.category.upsert({
     where: { name: 'Clothing' },
     update: {},
     create: {
-        name: 'Clothing',
-        slug: 'clothing',
+      name: 'Clothing',
+      slug: 'clothing',
     },
-  })
+  });
 
   const homeAndKitchen = await prisma.category.upsert({
     where: { name: 'Home & Kitchen' },
     update: {},
     create: {
-        name: 'Home & Kitchen',
-        slug: 'home-and-kitchen',
+      name: 'Home & Kitchen',
+      slug: 'home-and-kitchen',
     },
-  })
+  });
 
   const sportsAndOutdoors = await prisma.category.upsert({
     where: { name: 'Sports & Outdoors' },
     update: {},
     create: {
-        name: 'Sports & Outdoors',
-        slug: 'sports-and-outdoors',
+      name: 'Sports & Outdoors',
+      slug: 'sports-and-outdoors',
     },
-  })
+  });
+
+  // ---------------------------------------------------------------------------
+  // Products
+  // ---------------------------------------------------------------------------
+
+  const existingProducts = await prisma.product.count();
+  if (existingProducts === 0) {
+    await prisma.product.createMany({
+      data: [
+        // Electronics
+        {
+          name: 'Wireless Noise-Cancelling Headphones',
+          description:
+            'Over-ear headphones with active noise cancellation and 30-hour battery.',
+          price: '199.99',
+          stock: 50,
+          categoryId: electronics.id,
+        },
+        {
+          name: '4K Streaming Media Player',
+          description: 'Compact player with 4K HDR support and voice remote.',
+          price: '49.99',
+          stock: 120,
+          categoryId: electronics.id,
+        },
+        {
+          name: 'Mechanical Keyboard',
+          description:
+            'Tenkeyless mechanical keyboard with hot-swappable switches.',
+          price: '89.99',
+          stock: 75,
+          categoryId: electronics.id,
+        },
+        {
+          name: 'Portable Bluetooth Speaker',
+          description: 'Water-resistant speaker with 12-hour playtime.',
+          price: '39.99',
+          stock: 200,
+          categoryId: electronics.id,
+        },
+
+        // Clothing
+        {
+          name: 'Classic Cotton T-Shirt',
+          description: 'Soft 100% cotton crewneck tee.',
+          price: '14.99',
+          stock: 300,
+          categoryId: clothing.id,
+        },
+        {
+          name: 'Slim-Fit Denim Jeans',
+          description: 'Stretch denim jeans in a slim cut.',
+          price: '49.99',
+          stock: 150,
+          categoryId: clothing.id,
+        },
+        {
+          name: 'Merino Wool Sweater',
+          description: 'Lightweight merino wool pullover.',
+          price: '79.99',
+          stock: 60,
+          categoryId: clothing.id,
+        },
+        {
+          name: 'Waterproof Rain Jacket',
+          description: 'Packable shell with taped seams.',
+          price: '99.99',
+          stock: 40,
+          categoryId: clothing.id,
+        },
+
+        // Home & Kitchen
+        {
+          name: "Stainless Steel Chef's Knife",
+          description: '8-inch forged high-carbon stainless blade.',
+          price: '34.99',
+          stock: 90,
+          categoryId: homeAndKitchen.id,
+        },
+        {
+          name: '12-Cup Drip Coffee Maker',
+          description: 'Programmable coffee maker with reusable filter.',
+          price: '59.99',
+          stock: 70,
+          categoryId: homeAndKitchen.id,
+        },
+        {
+          name: 'Non-Stick Frying Pan Set',
+          description: 'Set of two non-stick pans, 8" and 10".',
+          price: '44.99',
+          stock: 110,
+          categoryId: homeAndKitchen.id,
+        },
+        {
+          name: 'Ceramic Dinnerware Set',
+          description: '16-piece service for four.',
+          price: '89.99',
+          stock: 45,
+          categoryId: homeAndKitchen.id,
+        },
+      ],
+    });
+  }
 }
 
 main()
