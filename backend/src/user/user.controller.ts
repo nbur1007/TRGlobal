@@ -12,6 +12,7 @@ import { AdminCreateUserDto } from './dto/AdminCreateUser.dto';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { JwtAuthGuard } from '../auth/guards/jwt.guard';
 import { RolesGuard } from '../auth/guards/roles/roles.guard';
+import { Role } from 'generated/prisma/enums';
 
 @Controller('user')
 export class UserController {
@@ -25,7 +26,7 @@ export class UserController {
 
   @Post('create_admin')
   @UsePipes(ValidationPipe)
-  @Roles(Roles.ADMIN)
+  @Roles(Role.ADMIN)
   @UseGuards(JwtAuthGuard, RolesGuard)
   createAdmin(@Body() adminCreateUserDto: AdminCreateUserDto) {
     return this.userService.createAdmin(adminCreateUserDto);
