@@ -3,6 +3,7 @@ import { AuthPayLoadDto } from './dto/auth.dto';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from '../user/user.service';
 import { comparePasswords } from '../utils/bcrypt';
+import { Role } from 'generated/prisma/enums';
 
 @Injectable()
 export class AuthService {
@@ -13,11 +14,20 @@ export class AuthService {
 
   async validateUser({ email, password }: AuthPayLoadDto) {
     const userDB = await this.userService.findUser(email);
-
-    if (userDB != null && comparePasswords(password, userDB.passwordHash)) {
-      return this.jwtService.sign({ sub: userDB.id, email: userDB.email });
-    } else {
-      return null;
+    if (userDB && comparePasswords(password, userDB.passwordHash)) {
+      const { passwordHash, ...user } = userDB;
+      return user;
     }
+    return null;
+  }
+
+  login(user: { id: string; email: string; role: Role }) {
+    return {
+      access_token: this.jwtService.sign({
+        sub: user.id,
+        email: user.email,
+        role: user.role,
+      }),
+    };
   }
 }
