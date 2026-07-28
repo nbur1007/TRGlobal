@@ -75,13 +75,13 @@ async function main() {
   if (existingProducts === 0) {
     await prisma.product.createMany({
       data: [
-        // Electronics
         {
           name: 'Wireless Noise-Cancelling Headphones',
           description:
             'Over-ear headphones with active noise cancellation and 30-hour battery.',
           price: '199.99',
           stock: 50,
+          imageUrl: '../assets/headphones.JPG',
           categoryId: electronics.id,
         },
         {
@@ -89,6 +89,7 @@ async function main() {
           description: 'Compact player with 4K HDR support and voice remote.',
           price: '49.99',
           stock: 120,
+          imageUrl: '../assets/mediaStream.JPG',
           categoryId: electronics.id,
         },
         {
@@ -97,6 +98,7 @@ async function main() {
             'Tenkeyless mechanical keyboard with hot-swappable switches.',
           price: '89.99',
           stock: 75,
+          imageUrl: '../assets/keyboard.JPG',
           categoryId: electronics.id,
         },
         {
@@ -104,15 +106,17 @@ async function main() {
           description: 'Water-resistant speaker with 12-hour playtime.',
           price: '39.99',
           stock: 200,
+          imageUrl: '../assets/speaker.JPG',
           categoryId: electronics.id,
         },
 
-        // Clothing
+  
         {
           name: 'Classic Cotton T-Shirt',
           description: 'Soft 100% cotton crewneck tee.',
           price: '14.99',
           stock: 300,
+          imageUrl: '../assets/tshirt.WEBP',
           categoryId: clothing.id,
         },
         {
@@ -120,6 +124,7 @@ async function main() {
           description: 'Stretch denim jeans in a slim cut.',
           price: '49.99',
           stock: 150,
+          imageUrl: '../assets/jeans.WEBP',
           categoryId: clothing.id,
         },
         {
@@ -127,6 +132,7 @@ async function main() {
           description: 'Lightweight merino wool pullover.',
           price: '79.99',
           stock: 60,
+          imageUrl: '../assets/sweater.WEBP',
           categoryId: clothing.id,
         },
         {
@@ -134,15 +140,17 @@ async function main() {
           description: 'Packable shell with taped seams.',
           price: '99.99',
           stock: 40,
+          imageUrl: '../assets/jacket.JPG',
           categoryId: clothing.id,
         },
 
-        // Home & Kitchen
+
         {
           name: "Stainless Steel Chef's Knife",
           description: '8-inch forged high-carbon stainless blade.',
           price: '34.99',
           stock: 90,
+          imageUrl: '../assets/knife.JPG',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -150,6 +158,7 @@ async function main() {
           description: 'Programmable coffee maker with reusable filter.',
           price: '59.99',
           stock: 70,
+          imageUrl: '../assets/coffee.JPG',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -157,6 +166,7 @@ async function main() {
           description: 'Set of two non-stick pans, 8" and 10".',
           price: '44.99',
           stock: 110,
+          imageUrl: '../assets/pans.WEBP',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -164,9 +174,24 @@ async function main() {
           description: '16-piece service for four.',
           price: '89.99',
           stock: 45,
+          imageUrl: '../assets/plates.WEBP',
           categoryId: homeAndKitchen.id,
         },
       ],
+    });
+
+    await prisma.product.createMany({
+        data: Array.from({ length: 15 }, (_, i) => {
+        const n = i + 1;
+        return {
+            name: `Electronics Accessory ${n}`,
+            description: `Filler electronics product ${n} for pagination testing.`,
+            price: (9.99 + n).toFixed(2),
+            stock: 100 + n,
+            imageUrl: '../assets/test.JPG',
+            categoryId: electronics.id,
+        };
+        }),
     });
   }
 }
