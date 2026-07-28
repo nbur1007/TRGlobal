@@ -1,6 +1,9 @@
-import { IsNumber, IsOptional, IsPositive } from "class-validator";
+import { IsNumber, IsOptional, IsPositive, IsUUID, isUUID } from "class-validator";
 
-export class ProductDto {}
+export class CategoryDto {
+    @IsUUID()
+    categoryId!: string;
+}
 
 export class PaginationDto{
     @IsNumber()

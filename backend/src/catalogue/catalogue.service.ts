@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { PaginationDto } from './dto/product.dto';
+import { CategoryDto, PaginationDto } from './dto/product.dto';
 
 @Injectable()
 export class CatalogueService {
@@ -14,7 +14,15 @@ export class CatalogueService {
     return page;
   }
 
-  async getProductsByCategory(){}
+  async getProductsByCategory(paginationDto: PaginationDto, categoryDto: CategoryDto){
+    const page = await this.prismaService.product.findMany({
+      where: {
+        categoryId: categoryDto.categoryId,
+      },
+      skip: paginationDto.skip,
+      take: paginationDto.take,
+    })
+  }
 
   async getDetails(){}
 
