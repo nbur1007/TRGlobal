@@ -1,6 +1,15 @@
-import { Transform } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsPositive } from "class-validator";
 
 export class ProductDto {}
 
-export class PageDto{}
+export class PaginationDto{
+    @IsNumber()
+    @IsPositive()
+    @IsOptional()
+    skip!: number;
+
+    @IsNumber()
+    @IsPositive()
+    @IsOptional()
+    take!: number;
+}

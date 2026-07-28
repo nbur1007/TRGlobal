@@ -10,6 +10,7 @@ import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
+import { PaginationDto } from './dto/product.dto';
 
 @Controller('product')
 export class CatalogueController {
@@ -18,8 +19,8 @@ export class CatalogueController {
   @Public()
   @Get('list-products')
   @UsePipes(ValidationPipe)
-  listProducts() {
-    return this.catalogueService.getProducts();
+  listProducts(@Query() paginationDto: PaginationDto) {
+    return this.catalogueService.getProducts(paginationDto);
   }
 
   
