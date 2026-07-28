@@ -4,7 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { UserDto, AdminDto } from './dto/User.dto';
+import { UserDto, AdminDto } from './dto/user.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
 import { Role } from 'generated/prisma/enums';

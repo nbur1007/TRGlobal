@@ -7,10 +7,10 @@ import { UserModule } from './user/user.module';
 import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles/roles.guard';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
-import { ProductModule } from './product/product.module';
+import { CatalogueModule } from './catalogue/catalogue.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UserModule, ProductModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UserModule, CatalogueModule],
   controllers: [AppController],
   providers: [
     AppService,

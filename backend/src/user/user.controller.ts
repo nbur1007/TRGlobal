@@ -14,7 +14,7 @@ import {
   AdminDto,
   UpdateUserDto,
   DeleteUserDto,
-} from './dto/User.dto';
+} from './dto/user.dto';
 import { UserService } from './user.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
