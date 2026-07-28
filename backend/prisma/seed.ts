@@ -81,7 +81,7 @@ async function main() {
             'Over-ear headphones with active noise cancellation and 30-hour battery.',
           price: '199.99',
           stock: 50,
-          imageUrl: '../assets/headphones.JPG',
+          imageUrl: 'https://m.media-amazon.com/images/I/71YM2N5whtL.jpg',
           categoryId: electronics.id,
         },
         {
@@ -89,7 +89,8 @@ async function main() {
           description: 'Compact player with 4K HDR support and voice remote.',
           price: '49.99',
           stock: 120,
-          imageUrl: '../assets/mediaStream.JPG',
+          imageUrl:
+            'https://lcdn.altex.ro/media/catalog/product/h/d/hdpth245_1_2e58915c.jpg',
           categoryId: electronics.id,
         },
         {
@@ -98,7 +99,8 @@ async function main() {
             'Tenkeyless mechanical keyboard with hot-swappable switches.',
           price: '89.99',
           stock: 75,
-          imageUrl: '../assets/keyboard.JPG',
+          imageUrl:
+            'https://www.keychron.com/cdn/shop/products/Keychron-K8-tenkeyless-wireless-mechanical-keyboard-for-Mac-Windows-non-backlight-with-Keychron-switch-brown-hot-swappable.jpg?v=1657781173&width=1214',
           categoryId: electronics.id,
         },
         {
@@ -106,17 +108,18 @@ async function main() {
           description: 'Water-resistant speaker with 12-hour playtime.',
           price: '39.99',
           stock: 200,
-          imageUrl: '../assets/speaker.JPG',
+          imageUrl:
+            'https://contents.mediadecathlon.com/p2855566/k$7e601bc15f252591a4911ddbcf91f22e/portable-bluetoothR-speaker-ps100.jpg',
           categoryId: electronics.id,
         },
 
-  
         {
           name: 'Classic Cotton T-Shirt',
           description: 'Soft 100% cotton crewneck tee.',
           price: '14.99',
           stock: 300,
-          imageUrl: '../assets/tshirt.WEBP',
+          imageUrl:
+            'https://cdn2.propercloth.com/pic_sp/1772_8a4081e427995376f093607f687f7e6e_size6.jpg',
           categoryId: clothing.id,
         },
         {
@@ -124,7 +127,8 @@ async function main() {
           description: 'Stretch denim jeans in a slim cut.',
           price: '49.99',
           stock: 150,
-          imageUrl: '../assets/jeans.WEBP',
+          imageUrl:
+            'https://lahaute.com.au/cdn/shop/files/Lahaute_Sep_99347.jpg?v=1755737936&width=1638',
           categoryId: clothing.id,
         },
         {
@@ -132,7 +136,8 @@ async function main() {
           description: 'Lightweight merino wool pullover.',
           price: '79.99',
           stock: 60,
-          imageUrl: '../assets/sweater.WEBP',
+          imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTzuZGNItdM5yaL7ygSLjBjATdNu0ehJHjJG_mx42mYpkXocVvcCXzSIWG&s=10',
           categoryId: clothing.id,
         },
         {
@@ -140,17 +145,18 @@ async function main() {
           description: 'Packable shell with taped seams.',
           price: '99.99',
           stock: 40,
-          imageUrl: '../assets/jacket.JPG',
+          imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSpObMGetsxO0jD1s937LsSdE5om3LJYvM_F6GsDYVb-jXUD-BgEjKEZFsR&s=10',
           categoryId: clothing.id,
         },
-
 
         {
           name: "Stainless Steel Chef's Knife",
           description: '8-inch forged high-carbon stainless blade.',
           price: '34.99',
           stock: 90,
-          imageUrl: '../assets/knife.JPG',
+          imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqT0AXBbYemYc_2A5wZ8JrXtnYovfX5LisFTwhfxEi6-o053SVVXE5lK8c&s=10',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -158,7 +164,8 @@ async function main() {
           description: 'Programmable coffee maker with reusable filter.',
           price: '59.99',
           stock: 70,
-          imageUrl: '../assets/coffee.JPG',
+          imageUrl:
+            'https://www.koolatron.com.au/cdn/shop/files/KKCM12B-ECOM-AU-01.jpg?v=1715423378',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -166,7 +173,8 @@ async function main() {
           description: 'Set of two non-stick pans, 8" and 10".',
           price: '44.99',
           stock: 110,
-          imageUrl: '../assets/pans.WEBP',
+          imageUrl:
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwCCZnCrQZqgFgjSjlXlkt0wTyTfQuPLh3ZwH4Hg7XDcf2gO-SVk0m34ks&s=10',
           categoryId: homeAndKitchen.id,
         },
         {
@@ -174,24 +182,24 @@ async function main() {
           description: '16-piece service for four.',
           price: '89.99',
           stock: 45,
-          imageUrl: '../assets/plates.WEBP',
+          imageUrl:
+            'https://ak1.ostkcdn.com/images/products/is/images/direct/c7c5768d541e509ce423ca5b0b9eec6de131122d/16-PC-Rimmed-Dinnerware-Set-for-4-Person%2C-Mugs%2C-Salad-and-Dinner-Plates-and-Bowls-Sets%2C-White.jpg',
           categoryId: homeAndKitchen.id,
         },
       ],
     });
 
     await prisma.product.createMany({
-        data: Array.from({ length: 15 }, (_, i) => {
+      data: Array.from({ length: 15 }, (_, i) => {
         const n = i + 1;
         return {
-            name: `Electronics Accessory ${n}`,
-            description: `Filler electronics product ${n} for pagination testing.`,
-            price: (9.99 + n).toFixed(2),
-            stock: 100 + n,
-            imageUrl: '../assets/test.JPG',
-            categoryId: electronics.id,
+          name: `Electronics Accessory ${n}`,
+          description: `Filler electronics product ${n} for pagination testing.`,
+          price: (9.99 + n).toFixed(2),
+          stock: 100 + n,
+          categoryId: electronics.id,
         };
-        }),
+      }),
     });
   }
 }
