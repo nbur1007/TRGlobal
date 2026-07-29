@@ -62,7 +62,34 @@ export class CatalogueService {
     }
   }
 
-  async updateProduct(editProductDto: EditProductDto) {}
+  async updateProduct(editProductDto: EditProductDto) {
+    try {
+      const updatedProduct = await this.prismaService.product.update({
+        where: { id: editProductDto.productId },
+        data: {
+          name: editProductDto.name,
+          description: editProductDto.description,
+          price: editProductDto.price,
+          stock: editProductDto.stock,
+          imageUrl: editProductDto.imageUrl,
+          categoryId: editProductDto.categoryId,
+        },
+      });
+
+      return updatedProduct;
+    } catch (err) {
+      if (err === 'P2025') {
+        throw new HttpException('Product not found.', HttpStatus.NOT_FOUND);
+      }
+      if (err === 'P2003') {
+        throw new HttpException(
+          'Category does not exist.',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+      throw err;
+    }
+  }
 
   async deleteCategory() {}
 
