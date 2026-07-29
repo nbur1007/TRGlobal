@@ -18,27 +18,23 @@ export class CatalogueController {
 
   @Public()
   @Get('list-products')
-  @UsePipes(ValidationPipe)
   listProducts(@Query() paginationDto: PaginationDto) {
     return this.catalogueService.getProducts(paginationDto);
   }
 
   @Public()
   @Get('products-by-id')
-  @UsePipes(ValidationPipe)
   listProductsById(@Query() productQueryDto: ProductQueryDto){
     return this.catalogueService.getProductsByCategory(productQueryDto)
   }
 
   @Public()
   @Get('product-details')
-  @UsePipes(ValidationPipe)
   productDetails() {
     return this.catalogueService.getDetails();
   }
 
   @Delete('delete-product')
-  @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   deleteProduct() {
     return this.catalogueService.deleteProduct();

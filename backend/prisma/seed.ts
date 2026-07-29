@@ -190,7 +190,7 @@ async function main() {
     });
 
     await prisma.product.createMany({
-      data: Array.from({ length: 15 }, (_, i) => {
+      data: Array.from({ length: 21 }, (_, i) => {
         const n = i + 1;
         return {
           name: `Electronics Accessory ${n}`,
