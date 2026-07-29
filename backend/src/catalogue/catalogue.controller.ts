@@ -2,7 +2,10 @@ import {
   Controller,
   Delete,
   Get,
+  Patch,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
@@ -41,4 +44,23 @@ export class CatalogueController {
   deleteProduct(@Query() productByIdDto: ProductByIdDto) {
     return this.catalogueService.deleteProduct(productByIdDto);
   }
+
+  @Patch('update-product')
+  @Roles(Role.ADMIN)
+  updateProduct(){
+    return this.catalogueService.updateProduct();
+  }
+
+  @Delete('delete-category')
+  @Roles(Role.ADMIN)
+  deleteCategory(){
+    return this.catalogueService.deleteCategory();
+  }
+
+  @Patch('update-category')
+  @Roles(Role.ADMIN)
+  updateCategory(){
+    return this.catalogueService.updateCategory();
+  }
+
 }

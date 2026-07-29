@@ -53,4 +53,10 @@ export class CatalogueService {
       );
     }
   }
+
+  async updateProduct() {}
+
+  async deleteCategory() {}
+
+  async updateCategory() {}
 }
