@@ -10,7 +10,8 @@ import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
-import { ProductQueryDto, PaginationDto } from './dto/product.dto';
+import { ProductQueryDto, PaginationDto, ProductByIdDto } from './dto/product.dto';
+import { Product } from 'generated/prisma/browser';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -24,19 +25,19 @@ export class CatalogueController {
 
   @Public()
   @Get('products-by-id')
-  listProductsById(@Query() productQueryDto: ProductQueryDto){
-    return this.catalogueService.getProductsByCategory(productQueryDto)
+  listProductsById(@Query() productQueryDto: ProductQueryDto) {
+    return this.catalogueService.getProductsByCategory(productQueryDto);
   }
 
   @Public()
   @Get('product-details')
-  productDetails() {
-    return this.catalogueService.getDetails();
+  productDetails(@Query() productByIdDto: ProductByIdDto) {
+    return this.catalogueService.getDetails(productByIdDto);
   }
 
   @Delete('delete-product')
   @Roles(Role.ADMIN)
-  deleteProduct() {
-    return this.catalogueService.deleteProduct();
+  deleteProduct(@Query() productByIdDto: ProductByIdDto) {
+    return this.catalogueService.deleteProduct(productByIdDto);
   }
 }

@@ -1,11 +1,5 @@
 import { Type } from 'class-transformer';
-import {
-  IsNumber,
-  IsOptional,
-  IsPositive,
-  IsUUID,
-  Max,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsPositive, IsUUID, Max } from 'class-validator';
 
 export class PaginationDto {
   @IsOptional()
@@ -21,7 +15,12 @@ export class PaginationDto {
   take: number = 10;
 }
 
-export class ProductQueryDto extends PaginationDto{
+export class ProductQueryDto extends PaginationDto {
   @IsUUID()
   categoryId!: string;
+}
+
+export class ProductByIdDto {
+  @IsUUID()
+  productId!: string;
 }
