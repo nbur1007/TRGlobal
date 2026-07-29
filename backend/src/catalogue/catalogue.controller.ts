@@ -3,15 +3,16 @@ import {
   Delete,
   Get,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
-import { ProductQueryDto, PaginationDto, ProductByIdDto } from './dto/product.dto';
-import { Product } from 'generated/prisma/browser';
+import {
+  ProductQueryDto,
+  PaginationDto,
+  ProductByIdDto,
+} from './dto/product.dto';
 
 @Controller('catalogue')
 export class CatalogueController {
