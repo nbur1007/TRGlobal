@@ -10,9 +10,9 @@ import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
-import { CategoryDto, PaginationDto } from './dto/product.dto';
+import { ProductQueryDto, PaginationDto } from './dto/product.dto';
 
-@Controller('product')
+@Controller('catalogue')
 export class CatalogueController {
   constructor(private catalogueService: CatalogueService) {}
 
@@ -26,8 +26,8 @@ export class CatalogueController {
   @Public()
   @Get('products-by-id')
   @UsePipes(ValidationPipe)
-  listProductsById(@Query() paginationDto: PaginationDto, categoryDto:CategoryDto){
-    return this.catalogueService.getProductsByCategory(paginationDto, categoryDto)
+  listProductsById(@Query() productQueryDto: ProductQueryDto){
+    return this.catalogueService.getProductsByCategory(productQueryDto)
   }
 
   @Public()
