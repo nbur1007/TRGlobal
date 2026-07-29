@@ -8,9 +8,10 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './auth/guards/roles/roles.guard';
 import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CatalogueModule } from './catalogue/catalogue.module';
+import { CartModule } from './cart/cart.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UserModule, CatalogueModule],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), AuthModule, UserModule, CatalogueModule, CartModule],
   controllers: [AppController],
   providers: [
     AppService,
