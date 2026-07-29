@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Patch,
-  Query,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Patch, Query } from '@nestjs/common';
 import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
@@ -15,6 +7,7 @@ import {
   ProductQueryDto,
   PaginationDto,
   ProductByIdDto,
+  EditProductDto,
 } from './dto/product.dto';
 
 @Controller('catalogue')
@@ -28,8 +21,8 @@ export class CatalogueController {
   }
 
   @Public()
-  @Get('products-by-id')
-  listProductsById(@Query() productQueryDto: ProductQueryDto) {
+  @Get('products-by-category')
+  listProductsByCategory(@Query() productQueryDto: ProductQueryDto) {
     return this.catalogueService.getProductsByCategory(productQueryDto);
   }
 
@@ -47,20 +40,19 @@ export class CatalogueController {
 
   @Patch('update-product')
   @Roles(Role.ADMIN)
-  updateProduct(){
-    return this.catalogueService.updateProduct();
+  updateProduct(@Body() editProductDto: EditProductDto) {
+    return this.catalogueService.updateProduct(editProductDto);
   }
 
   @Delete('delete-category')
   @Roles(Role.ADMIN)
-  deleteCategory(){
+  deleteCategory() {
     return this.catalogueService.deleteCategory();
   }
 
   @Patch('update-category')
   @Roles(Role.ADMIN)
-  updateCategory(){
+  updateCategory() {
     return this.catalogueService.updateCategory();
   }
-
 }

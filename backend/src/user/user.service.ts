@@ -62,12 +62,8 @@ export class UserService {
       where: {
         id: id,
       },
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        createdAt: true,
+      omit: {
+        passwordHash: true,
       },
     });
 
@@ -142,12 +138,8 @@ export class UserService {
     try {
       const userList = await this.prismaService.user.findMany({
         where: { role: role },
-        select: {
-          id: true,
-          email: true,
-          name: true,
-          role: true,
-          createdAt: true,
+        omit: {
+          passwordHash: true,
         },
       });
       return userList;
@@ -158,12 +150,8 @@ export class UserService {
 
   async listAll() {
     const userList = await this.prismaService.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        name: true,
-        role: true,
-        createdAt: true,
+      omit: {
+        passwordHash: true,
       },
     });
 

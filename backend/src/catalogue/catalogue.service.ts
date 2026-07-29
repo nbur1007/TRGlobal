@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import {
+  EditProductDto,
   PaginationDto,
   ProductByIdDto,
   ProductQueryDto,
@@ -30,13 +31,20 @@ export class CatalogueService {
   }
 
   async getDetails(product: ProductByIdDto) {
-    const details = await this.prismaService.product.findFirstOrThrow({
-      where: {
-        id: product.productId,
-      },
-    });
+    try {
+      const details = await this.prismaService.product.findUnique({
+        where: {
+          id: product.productId,
+        },
+      });
 
-    return details;
+      return details;
+    } catch (err) {
+      throw new HttpException(
+        'This product does not exist.',
+        HttpStatus.NOT_FOUND,
+      );
+    }
   }
 
   async deleteProduct(product: ProductByIdDto) {
@@ -54,7 +62,7 @@ export class CatalogueService {
     }
   }
 
-  async updateProduct() {}
+  async updateProduct(editProductDto: EditProductDto) {}
 
   async deleteCategory() {}
 
