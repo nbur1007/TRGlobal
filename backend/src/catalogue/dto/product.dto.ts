@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import {
+  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsPositive,
@@ -30,31 +31,32 @@ export class ProductQueryDto extends PaginationDto {
 
 export class ProductByIdDto {
   @IsUUID()
+  @IsNotEmpty()
   id!: string;
 }
 
-export class EditProductDto extends ProductByIdDto {
-  @IsOptional()
+export class CreateOrEditProductDto extends ProductByIdDto {
+  @IsNotEmpty()
   @IsString()
   name!: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
   description!: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   price!: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsNumber()
   stock!: number;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsUrl()
   imageUrl!: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsUUID()
   categoryId!: string;
 }

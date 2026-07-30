@@ -15,7 +15,7 @@ import {
   ProductQueryDto,
   PaginationDto,
   ProductByIdDto,
-  EditProductDto,
+  CreateOrEditProductDto,
 } from './dto/product.dto';
 import {
   CategorySelectDto,
@@ -59,7 +59,7 @@ export class CatalogueController {
 
   @Patch('update-product')
   @Roles(Role.ADMIN)
-  updateProduct(@Body() editProductDto: EditProductDto) {
+  updateProduct(@Body() editProductDto: CreateOrEditProductDto) {
     return this.catalogueService.updateProduct(editProductDto);
   }
 
@@ -79,5 +79,11 @@ export class CatalogueController {
   @Roles(Role.ADMIN)
   createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.catalogueService.createCategory(createCategoryDto);
+  }
+
+  @Post('create-category')
+  @Roles(Role.ADMIN)
+  createProduct(@Body() createProductDto: CreateOrEditProductDto) {
+    return this.catalogueService.createProduct(createProductDto);
   }
 }
