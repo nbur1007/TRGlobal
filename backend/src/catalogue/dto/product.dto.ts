@@ -22,26 +22,31 @@ export class ProductQueryDto extends PaginationDto {
 
 export class ProductByIdDto {
   @IsUUID()
-  productId!: string;
+  id!: string;
 }
 
 export class EditProductDto extends ProductByIdDto {
+  @IsOptional()
   @IsString()
   name!: string;
   
+  @IsOptional()
   @IsString()
   description!: string;
   
+  @IsOptional()
   @IsNumber()
-  @IsPositive()
   price!: number;
   
+  @IsOptional()
   @IsNumber()
   stock!: number;
   
+  @IsOptional()
   @IsUrl()
   imageUrl!: string;
   
+  @IsOptional()
   @IsUUID()
   categoryId!: string;
 }

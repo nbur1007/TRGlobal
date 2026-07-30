@@ -6,6 +6,8 @@ import {
   ProductByIdDto,
   ProductQueryDto,
 } from './dto/product.dto';
+import { PrismaClientKnownRequestError } from 'generated/prisma/internal/prismaNamespace';
+import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class CatalogueService {
@@ -34,7 +36,7 @@ export class CatalogueService {
     try {
       const details = await this.prismaService.product.findUnique({
         where: {
-          id: product.productId,
+          id: product.id,
         },
       });
 
@@ -51,7 +53,7 @@ export class CatalogueService {
     try {
       await this.prismaService.product.delete({
         where: {
-          id: product.productId,
+          id: product.id,
         },
       });
     } catch (err) {
@@ -65,7 +67,7 @@ export class CatalogueService {
   async updateProduct(editProductDto: EditProductDto) {
     try {
       const updatedProduct = await this.prismaService.product.update({
-        where: { id: editProductDto.productId },
+        where: { id: editProductDto.id },
         data: {
           name: editProductDto.name,
           description: editProductDto.description,
@@ -78,15 +80,18 @@ export class CatalogueService {
 
       return updatedProduct;
     } catch (err) {
-      if (err === 'P2025') {
-        throw new HttpException('Product not found.', HttpStatus.NOT_FOUND);
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new HttpException('Product not found.', HttpStatus.NOT_FOUND);
+        }
+        if (err.code === 'P2003') {
+          throw new HttpException(
+            'Category does not exist.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
       }
-      if (err === 'P2003') {
-        throw new HttpException(
-          'Category does not exist.',
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+
       throw err;
     }
   }
