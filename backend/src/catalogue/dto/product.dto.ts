@@ -1,5 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsPositive, IsString, IsUrl, IsUUID, Max } from 'class-validator';
+import {
+  IsNumber,
+  IsOptional,
+  IsPositive,
+  IsString,
+  IsUrl,
+  IsUUID,
+  Max,
+} from 'class-validator';
 
 export class PaginationDto {
   @IsOptional()
@@ -29,23 +37,23 @@ export class EditProductDto extends ProductByIdDto {
   @IsOptional()
   @IsString()
   name!: string;
-  
+
   @IsOptional()
   @IsString()
   description!: string;
-  
+
   @IsOptional()
   @IsNumber()
   price!: number;
-  
+
   @IsOptional()
   @IsNumber()
   stock!: number;
-  
+
   @IsOptional()
   @IsUrl()
   imageUrl!: string;
-  
+
   @IsOptional()
   @IsUUID()
   categoryId!: string;

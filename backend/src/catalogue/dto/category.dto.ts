@@ -17,11 +17,11 @@ export class UpdateCategoryDto extends CategorySelectDto {
 }
 
 export class CreateCategoryDto {
-    @IsNotEmpty()
-    @IsString()
-    name!: string;
+  @IsNotEmpty()
+  @IsString()
+  name!: string;
 
-    @IsNotEmpty()
-    @IsString()
-    slug!: string;
+  @IsNotEmpty()
+  @IsString()
+  slug!: string;
 }
