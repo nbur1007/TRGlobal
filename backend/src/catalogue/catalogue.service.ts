@@ -140,6 +140,12 @@ export class CatalogueService {
         if (err.code === 'P2025') {
           throw new HttpException('Category not found.', HttpStatus.NOT_FOUND);
         }
+        if (err.code === 'P2002') {
+          throw new HttpException(
+            'A category with that name or slug already exists.',
+            HttpStatus.CONFLICT,
+          );
+        }
       }
       throw err;
     }
