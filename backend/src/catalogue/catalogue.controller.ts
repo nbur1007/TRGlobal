@@ -9,6 +9,7 @@ import {
   ProductByIdDto,
   EditProductDto,
 } from './dto/product.dto';
+import { CategoryDto } from './dto/category.dto';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -34,7 +35,7 @@ export class CatalogueController {
 
   @Delete('delete-product')
   @Roles(Role.ADMIN)
-  deleteProduct(@Query() productByIdDto: ProductByIdDto) {
+  deleteProduct(@Body() productByIdDto: ProductByIdDto) {
     return this.catalogueService.deleteProduct(productByIdDto);
   }
 
@@ -46,8 +47,8 @@ export class CatalogueController {
 
   @Delete('delete-category')
   @Roles(Role.ADMIN)
-  deleteCategory() {
-    return this.catalogueService.deleteCategory();
+  deleteCategory(@Body() categoryDto:CategoryDto) {
+    return this.catalogueService.deleteCategory(categoryDto);
   }
 
   @Patch('update-category')

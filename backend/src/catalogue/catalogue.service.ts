@@ -6,8 +6,8 @@ import {
   ProductByIdDto,
   ProductQueryDto,
 } from './dto/product.dto';
-import { PrismaClientKnownRequestError } from 'generated/prisma/internal/prismaNamespace';
 import { Prisma } from 'generated/prisma/client';
+import { CategoryDto } from './dto/category.dto';
 
 @Injectable()
 export class CatalogueService {
@@ -56,9 +56,10 @@ export class CatalogueService {
           id: product.id,
         },
       });
+      return;
     } catch (err) {
       throw new HttpException(
-        'This user does not exist.',
+        'This product does not exist.',
         HttpStatus.NOT_FOUND,
       );
     }
@@ -96,7 +97,24 @@ export class CatalogueService {
     }
   }
 
-  async deleteCategory() {}
+  async deleteCategory(category: CategoryDto) {
+    try {
+      await this.prismaService.category.delete({
+        where: { id: category.id },
+      });
+      return;
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2003'){
+          throw new HttpException(
+            'Category must be empty to be deleted.',
+            HttpStatus.BAD_REQUEST,
+          );
+        }
+      }
+      throw err;
+    }
+  }
 
   async updateCategory() {}
 }
