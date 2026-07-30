@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { CatalogueService } from './catalogue.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
@@ -9,7 +17,11 @@ import {
   ProductByIdDto,
   EditProductDto,
 } from './dto/product.dto';
-import { CategorySelectDto, CreateCategoryDto, UpdateCategoryDto } from './dto/category.dto';
+import {
+  CategorySelectDto,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from './dto/category.dto';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -19,6 +31,12 @@ export class CatalogueController {
   @Get('list-products')
   listProducts(@Query() paginationDto: PaginationDto) {
     return this.catalogueService.getProducts(paginationDto);
+  }
+
+  @Public()
+  @Get('list-categories')
+  listCategories() {
+    return this.catalogueService.getCategories();
   }
 
   @Public()
@@ -35,7 +53,7 @@ export class CatalogueController {
 
   @Delete('delete-product')
   @Roles(Role.ADMIN)
-  deleteProduct(@Body() productByIdDto: ProductByIdDto) {
+  deleteProduct(@Query() productByIdDto: ProductByIdDto) {
     return this.catalogueService.deleteProduct(productByIdDto);
   }
 
@@ -47,7 +65,7 @@ export class CatalogueController {
 
   @Delete('delete-category')
   @Roles(Role.ADMIN)
-  deleteCategory(@Body() categoryDto:CategorySelectDto) {
+  deleteCategory(@Query() categoryDto: CategorySelectDto) {
     return this.catalogueService.deleteCategory(categoryDto);
   }
 
@@ -59,7 +77,7 @@ export class CatalogueController {
 
   @Post('create-category')
   @Roles(Role.ADMIN)
-  createCategory(@Body() createCategoryDto: CreateCategoryDto){
+  createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.catalogueService.createCategory(createCategoryDto);
   }
 }

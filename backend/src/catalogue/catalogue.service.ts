@@ -25,6 +25,11 @@ export class CatalogueService {
     return pageContents;
   }
 
+  async getCategories() {
+    const categories = await this.prismaService.category.findMany();
+    return categories;
+  }
+
   async getProductsByCategory(productQueryDto: ProductQueryDto) {
     const page = await this.prismaService.product.findMany({
       where: {
@@ -37,20 +42,16 @@ export class CatalogueService {
   }
 
   async getDetails(product: ProductByIdDto) {
-    try {
-      const details = await this.prismaService.product.findUnique({
-        where: {
-          id: product.id,
-        },
-      });
-
-      return details;
-    } catch (err) {
+    const details = await this.prismaService.product.findUnique({
+      where: { id: product.id },
+    });
+    if (!details) {
       throw new HttpException(
         'This product does not exist.',
         HttpStatus.NOT_FOUND,
       );
     }
+    return details;
   }
 
   async deleteProduct(product: ProductByIdDto) {
@@ -71,7 +72,7 @@ export class CatalogueService {
 
   async updateProduct(editProductDto: EditProductDto) {
     try {
-      const updatedProduct = await this.prismaService.product.update({
+      const updatedProduct = await this.prismaService.category.update({
         where: { id: editProductDto.id },
         data: {
           name: editProductDto.name,
@@ -115,7 +116,7 @@ export class CatalogueService {
         if (err.code === 'P2003') {
           throw new HttpException(
             'Category must be empty to be deleted.',
-            HttpStatus.BAD_REQUEST,
+            HttpStatus.CONFLICT,
           );
         }
       }
@@ -152,10 +153,14 @@ export class CatalogueService {
           slug: category.slug,
         },
       });
+      return newCategory;
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new HttpException('Category not found.', HttpStatus.NOT_FOUND);
+        if (err.code === 'P2002') {
+          throw new HttpException(
+            'A category with that name or slug already exists.',
+            HttpStatus.CONFLICT,
+          );
         }
       }
       throw err;
