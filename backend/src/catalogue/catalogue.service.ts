@@ -7,7 +7,11 @@ import {
   ProductQueryDto,
 } from './dto/product.dto';
 import { Prisma } from 'generated/prisma/client';
-import { CategoryDto } from './dto/category.dto';
+import {
+  CategorySelectDto,
+  CreateCategoryDto,
+  UpdateCategoryDto,
+} from './dto/category.dto';
 
 @Injectable()
 export class CatalogueService {
@@ -97,7 +101,7 @@ export class CatalogueService {
     }
   }
 
-  async deleteCategory(category: CategoryDto) {
+  async deleteCategory(category: CategorySelectDto) {
     try {
       await this.prismaService.category.delete({
         where: { id: category.id },
@@ -105,7 +109,10 @@ export class CatalogueService {
       return;
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2003'){
+        if (err.code === 'P2025') {
+          throw new HttpException('Category not found.', HttpStatus.NOT_FOUND);
+        }
+        if (err.code === 'P2003') {
           throw new HttpException(
             'Category must be empty to be deleted.',
             HttpStatus.BAD_REQUEST,
@@ -116,5 +123,42 @@ export class CatalogueService {
     }
   }
 
-  async updateCategory() {}
+  async updateCategory(category: UpdateCategoryDto) {
+    try {
+      const updatedCategory = await this.prismaService.product.update({
+        where: { id: category.id },
+        data: {
+          name: category.name,
+          slug: category.slug,
+        },
+      });
+
+      return updatedCategory;
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new HttpException('Category not found.', HttpStatus.NOT_FOUND);
+        }
+      }
+      throw err;
+    }
+  }
+
+  async createCategory(category: CreateCategoryDto) {
+    try {
+      const newCategory = await this.prismaService.category.create({
+        data: {
+          name: category.name,
+          slug: category.slug,
+        },
+      });
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new HttpException('Category not found.', HttpStatus.NOT_FOUND);
+        }
+      }
+      throw err;
+    }
+  }
 }
