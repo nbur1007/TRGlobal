@@ -72,7 +72,7 @@ export class CatalogueService {
 
   async updateProduct(editProductDto: EditProductDto) {
     try {
-      const updatedProduct = await this.prismaService.category.update({
+      const updatedProduct = await this.prismaService.product.update({
         where: { id: editProductDto.id },
         data: {
           name: editProductDto.name,
@@ -126,7 +126,7 @@ export class CatalogueService {
 
   async updateCategory(category: UpdateCategoryDto) {
     try {
-      const updatedCategory = await this.prismaService.product.update({
+      const updatedCategory = await this.prismaService.category.update({
         where: { id: category.id },
         data: {
           name: category.name,
