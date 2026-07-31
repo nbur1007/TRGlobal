@@ -1,4 +1,4 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Delete, Get, Post, Query } from '@nestjs/common';
 import { CartService } from './cart.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
@@ -13,4 +13,16 @@ export class CartController {
   getCart(@Query() cartDto: CartDto){
     return this.cartsService.getCart(cartDto);
   }
+
+  @Post('create-cart')
+  @Roles(Role.ADMIN, Role.CUSTOMER)
+  createCart(){}
+
+  @Delete('delete-own-cart')
+  @Roles(Role.ADMIN, Role.CUSTOMER)
+  deleteOwnCart() {}
+
+  @Delete('delete-other-cart')
+  @Roles(Role.ADMIN)
+  deleteOtherCart() {}
 }

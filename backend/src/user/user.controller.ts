@@ -32,34 +32,12 @@ export class UserController {
     return this.userService.createUser(createUserDto);
   }
 
-  @Delete('delete_self')
-  @Roles(Role.ADMIN, Role.CUSTOMER)
-  @UsePipes(ValidationPipe)
-  deleteSelf(@Req() req: Request) {
-    const user = req.user as { id: string; email: string; role: Role };
-    return this.userService.deleteUser(user.id);
-  }
-
   @Get('me')
   @Roles(Role.ADMIN, Role.CUSTOMER)
   @UsePipes(ValidationPipe)
   getSelf(@Req() req: Request) {
     const user = req.user as { id: string; email: string; role: Role };
     return this.userService.findUser(user.id);
-  }
-
-  @Post('create_admin')
-  @UsePipes(ValidationPipe)
-  @Roles(Role.ADMIN)
-  createAdmin(@Body() adminCreateUserDto: AdminDto) {
-    return this.userService.createAdmin(adminCreateUserDto);
-  }
-
-  @Delete('delete_user')
-  @UsePipes(ValidationPipe)
-  @Roles(Role.ADMIN)
-  deleteUser(@Body() user: DeleteUserDto) {
-    return this.userService.deleteUser(user.id);
   }
 
   @Get('list_by_role')
@@ -76,10 +54,32 @@ export class UserController {
     return this.userService.listAll();
   }
 
+  @Post('create_admin')
+  @UsePipes(ValidationPipe)
+  @Roles(Role.ADMIN)
+  createAdmin(@Body() adminCreateUserDto: AdminDto) {
+    return this.userService.createAdmin(adminCreateUserDto);
+  }
+
   @Patch('update_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   promoteUser(@Body() user: UpdateUserDto) {
     return this.userService.updateRole(user.id, user.role);
+  }
+
+  @Delete('delete_self')
+  @Roles(Role.ADMIN, Role.CUSTOMER)
+  @UsePipes(ValidationPipe)
+  deleteSelf(@Req() req: Request) {
+    const user = req.user as { id: string; email: string; role: Role };
+    return this.userService.deleteUser(user.id);
+  }
+
+  @Delete('delete_user')
+  @UsePipes(ValidationPipe)
+  @Roles(Role.ADMIN)
+  deleteUser(@Body() user: DeleteUserDto) {
+    return this.userService.deleteUser(user.id);
   }
 }
