@@ -7,4 +7,8 @@ export class CartService {
   constructor(private prismaService: PrismaService) {}
 
   async getCart(cart: CartDto){}
+
+  async createCart(cart: CartDto) {}
+
+  async deleteCart(userId: String) {}
 }

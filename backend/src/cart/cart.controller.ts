@@ -1,8 +1,17 @@
-import { Controller, Delete, Get, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { CartService } from './cart.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { CartDto } from './dto/cart.dto';
+import type { Request } from 'express';
 
 @Controller('cart')
 export class CartController {
@@ -16,13 +25,20 @@ export class CartController {
 
   @Post('create-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  createCart() {}
+  createCart(@Body() cartDto: CartDto) {
+    return this.cartsService.createCart(cartDto);
+  }
 
   @Delete('delete-own-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  deleteOwnCart(@Query() cartDto: CartDto) {}
+  deleteOwnCart(@Req() req: Request) {
+    const user = req.user as { id: string; email: string; role: Role };
+    return this.cartsService.deleteCart(user.id);
+  }
 
   @Delete('delete-other-cart')
   @Roles(Role.ADMIN)
-  deleteOtherCart(@Query() cartDto: CartDto) {}
+  deleteOtherCart(@Query() cartDto: CartDto) {
+    return this.cartsService.deleteCart(cartDto.userId);
+  }
 }
