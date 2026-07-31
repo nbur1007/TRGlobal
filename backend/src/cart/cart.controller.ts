@@ -25,14 +25,15 @@ export class CartController {
 
   @Post('create-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  createCart(@Body() cartDto: CartDto) {
-    return this.cartsService.createCart(cartDto);
+  createCart(@Req() req: Request, @Body() cartDto: CartDto) {
+    const user = req.user as { id: string }
+    return this.cartsService.createCart(user.id, cartDto);
   }
 
   @Delete('delete-own-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
   deleteOwnCart(@Req() req: Request) {
-    const user = req.user as { id: string; email: string; role: Role };
+    const user = req.user as { id: string };
     return this.cartsService.deleteCart(user.id);
   }
 

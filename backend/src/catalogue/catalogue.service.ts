@@ -55,7 +55,29 @@ export class CatalogueService {
   }
 
   async createProduct(product: CreateOrEditProductDto){
-    
+    try {
+      const newCategory = await this.prismaService.product.create({
+        data: {
+          name: product.name,
+          description: product.description,
+          price: product.price,
+          stock: product.stock,
+          imageUrl: product.imageUrl,
+          categoryId: product.categoryId
+        },
+      });
+      return newCategory;
+    } catch (err) {
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2002') {
+          throw new HttpException(
+            'This product already exists.',
+            HttpStatus.CONFLICT,
+          );
+        }
+      }
+      throw err;
+    }
   }
 
   async deleteProduct(product: ProductByIdDto) {

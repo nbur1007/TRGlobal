@@ -81,7 +81,7 @@ export class CatalogueController {
     return this.catalogueService.createCategory(createCategoryDto);
   }
 
-  @Post('create-category')
+  @Post('create-product')
   @Roles(Role.ADMIN)
   createProduct(@Body() createProductDto: CreateOrEditProductDto) {
     return this.catalogueService.createProduct(createProductDto);

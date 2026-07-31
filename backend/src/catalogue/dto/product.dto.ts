@@ -48,11 +48,9 @@ export class CreateOrEditProductDto extends ProductByIdDto {
   @IsNumber()
   price!: number;
 
-  @IsNotEmpty()
   @IsNumber()
   stock!: number;
 
-  @IsNotEmpty()
   @IsUrl()
   imageUrl!: string;
 
