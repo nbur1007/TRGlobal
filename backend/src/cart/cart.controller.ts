@@ -10,19 +10,19 @@ export class CartController {
 
   @Get('cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  getCart(@Query() cartDto: CartDto){
+  getCart(@Query() cartDto: CartDto) {
     return this.cartsService.getCart(cartDto);
   }
 
   @Post('create-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  createCart(){}
+  createCart() {}
 
   @Delete('delete-own-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  deleteOwnCart() {}
+  deleteOwnCart(@Query() cartDto: CartDto) {}
 
   @Delete('delete-other-cart')
   @Roles(Role.ADMIN)
-  deleteOtherCart() {}
+  deleteOtherCart(@Query() cartDto: CartDto) {}
 }
