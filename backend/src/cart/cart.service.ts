@@ -9,12 +9,17 @@ export class CartService {
 
   async getCart(id: string) {
     try {
-        const cart = await this.prismaService.cart.findFirst({
-          where: {userId: id}
-        });
+      const cart = await this.prismaService.cart.findFirst({
+        where: { userId: id },
+        include: {
+          items: {
+            include: { product: true },
+          },
+        },
+      });
 
-        return cart;
-    } catch(err) {
+      return cart;
+    } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2025') {
           throw new HttpException(
@@ -25,7 +30,6 @@ export class CartService {
       }
     }
   }
-
 
   async deleteCart(userId: string) {
     try {
