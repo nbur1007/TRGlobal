@@ -1,35 +1,46 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Prisma } from 'generated/prisma/client';
-import { CartItemDto, CartSearchDto } from './dto/cart.dto';
+import { CartItemDto } from './dto/cart.dto';
+import { fromCents, toCents } from '../utils/money';
 
 @Injectable()
 export class CartService {
   constructor(private prismaService: PrismaService) {}
 
   async getCart(id: string) {
-    try {
-      const cart = await this.prismaService.cart.findFirst({
-        where: { userId: id },
-        include: {
-          items: {
-            include: { product: true },
-          },
+    const cart = await this.prismaService.cart.findUnique({
+      where: { userId: id },
+      include: {
+        items: {
+          include: { product: true },
+          orderBy: { createdAt: 'asc' },
         },
-      });
+      },
+    });
 
-      return cart;
-    } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new HttpException(
-            'User not found: Cannot find cart.',
-            HttpStatus.NOT_FOUND,
-          );
-        }
-      }
-      throw err;
+    if (!cart) {
+      throw new HttpException('Cart not found.', HttpStatus.NOT_FOUND);
     }
+    let totalCents = 0;
+
+    const items = cart.items.map((item) => {
+      const unitCents = toCents(item.product.price);
+      const lineCents = unitCents * item.quantity;
+      totalCents += lineCents;
+
+      return {
+        ...item,
+        lineTotal: fromCents(lineCents),
+      };
+    });
+
+    return {
+      ...cart,
+      items,
+      total: fromCents(totalCents),
+      itemCount: items.length,
+    };
   }
 
   async deleteCart(userId: string) {
@@ -43,10 +54,7 @@ export class CartService {
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2025') {
-          throw new HttpException(
-            'User not found: Cannot delete cart.',
-            HttpStatus.NOT_FOUND,
-          );
+          throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
         }
       }
       throw err;
@@ -103,10 +111,12 @@ export class CartService {
     }
 
     try {
-      const item = await this.prismaService.cartItem.findFirst({
+      const item = await this.prismaService.cartItem.findUnique({
         where: {
-          cartId: cart.id,
-          productId: decreaseRequest.productId,
+          cartId_productId: {
+            cartId: cart.id,
+            productId: decreaseRequest.productId,
+          },
         },
       });
 
@@ -119,20 +129,16 @@ export class CartService {
       if (quantAfterDecrease <= 0) {
         return await this.prismaService.cartItem.delete({
           where: { id: item.id },
+          include: { product: true },
         });
       } else {
         return await this.prismaService.cartItem.update({
           where: { id: item.id },
           data: { quantity: quantAfterDecrease },
+          include: { product: true },
         });
       }
-
-      item;
     } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === '') {
-        }
-      }
       throw err;
     }
   }
