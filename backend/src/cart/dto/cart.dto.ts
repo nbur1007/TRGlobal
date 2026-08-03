@@ -1,24 +1,16 @@
-import { IsNotEmpty, IsNumber, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsNotEmpty, IsString, IsUUID, Min } from 'class-validator';
 
 export class CartSearchDto {
   @IsUUID()
-  @IsString()
   @IsNotEmpty()
   userId!: string;
 }
 
 export class CartItemDto {
   @IsUUID()
-  @IsString()
-  @IsNotEmpty()
-  cartId!: string;
-
-  @IsUUID()
-  @IsString()
-  @IsNotEmpty()
   productId!: string;
 
-  @IsNumber()
-  @IsNotEmpty()
-  quatinity!: number;
+  @IsInt()
+  @Min(1)
+  quantity!: number;
 }

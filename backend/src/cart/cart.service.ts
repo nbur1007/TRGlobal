@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { Prisma } from 'generated/prisma/client';
-import { CartSearchDto } from './dto/cart.dto';
+import { CartItemDto, CartSearchDto } from './dto/cart.dto';
 
 @Injectable()
 export class CartService {
@@ -28,6 +28,7 @@ export class CartService {
           );
         }
       }
+      throw err;
     }
   }
 
@@ -48,6 +49,11 @@ export class CartService {
           );
         }
       }
+      throw err;
     }
   }
+
+  async addToCart(userId: string, cartItem: CartItemDto) {}
+
+  async removeFromCart(userId: string, cartItem: CartItemDto) {}
 }

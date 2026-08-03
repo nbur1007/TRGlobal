@@ -18,14 +18,16 @@ export class CartController {
 
   @Patch('add-to-cart')
   @Roles(Role.CUSTOMER)
-  addToCart(@Body() cartItemDto: CartItemDto) {
-
+  addToCart(@Req() req: Request, @Body() cartItemDto: CartItemDto) {
+    const user = req.user as { id: string };
+    return this.cartsService.addToCart(user.id, cartItemDto);
   }
 
   @Patch('remove-from-cart')
   @Roles(Role.CUSTOMER)
-  removeFromCart(@Body() cartItemDto: CartItemDto) {
-    
+  removeFromCart(@Req() req: Request, @Body() cartItemDto: CartItemDto) {
+    const user = req.user as { id: string };
+    return this.cartsService.removeFromCart(user.id, cartItemDto);
   }
 
   @Delete('delete-own-cart')
