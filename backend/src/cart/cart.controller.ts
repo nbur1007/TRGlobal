@@ -10,7 +10,7 @@ import {
 import { CartService } from './cart.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
-import { CartDto } from './dto/cart.dto';
+import { CartSearchDto, CartDto } from './dto/cart.dto';
 import type { Request } from 'express';
 
 @Controller('cart')
@@ -19,15 +19,15 @@ export class CartController {
 
   @Get('cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  getCart(@Query() cartDto: CartDto) {
-    return this.cartsService.getCart(cartDto);
+  getCart(@Query() cartSearchDto: CartSearchDto) {
+    return this.cartsService.getCart(cartSearchDto);
   }
 
   @Post('create-cart')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  createCart(@Req() req: Request, @Body() cartDto: CartDto) {
+  createCart(@Req() req: Request) {
     const user = req.user as { id: string }
-    return this.cartsService.createCart(user.id, cartDto);
+    return this.cartsService.createCart(user.id);
   }
 
   @Delete('delete-own-cart')

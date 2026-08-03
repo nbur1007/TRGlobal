@@ -42,6 +42,7 @@ export class UserService {
           passwordHash: password,
         },
       });
+      
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
