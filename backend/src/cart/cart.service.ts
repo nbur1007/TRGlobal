@@ -7,11 +7,13 @@ import { CartSearchDto } from './dto/cart.dto';
 export class CartService {
   constructor(private prismaService: PrismaService) {}
 
-  async getCart(cartSearchDto: CartSearchDto) {
+  async getCart(id: string) {
     try {
         const cart = await this.prismaService.cart.findFirst({
-          where: {userId: cartSearchDto.userId}
-        })
+          where: {userId: id}
+        });
+
+        return cart;
     } catch(err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2025') {
@@ -24,32 +26,6 @@ export class CartService {
     }
   }
 
-  async createCart(userId: string) {
-    try {
-      const newCart = await this.prismaService.cart.create({
-        data: {
-          userId: userId,
-        },
-      });
-
-      return newCart;
-    } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new HttpException(
-            'User not found: Cannot create a cart.',
-            HttpStatus.NOT_FOUND,
-          );
-        }
-        if (err.code === 'P2003') {
-          throw new HttpException(
-            'User already has a cart.',
-            HttpStatus.CONFLICT,
-          );
-        }
-      }
-    }
-  }
 
   async deleteCart(userId: string) {
     try {
@@ -60,10 +36,14 @@ export class CartService {
       });
       return;
     } catch (err) {
-      throw new HttpException(
-        'This user does not exist or have a cart.',
-        HttpStatus.NOT_FOUND,
-      );
+      if (err instanceof Prisma.PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new HttpException(
+            'User not found: Cannot delete cart.',
+            HttpStatus.NOT_FOUND,
+          );
+        }
+      }
     }
   }
 }

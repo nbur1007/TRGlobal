@@ -40,6 +40,7 @@ export class UserService {
           name: createUserDto.name,
           email: createUserDto.email,
           passwordHash: password,
+          cart: { create: {} }
         },
       });
       

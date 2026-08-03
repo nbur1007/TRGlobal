@@ -7,13 +7,3 @@ export class CartSearchDto {
   @IsNotEmpty()
   userId!: string;
 }
-
-export class CartDto extends CartSearchDto {
-  @IsUUID()
-  @IsString()
-  @IsNotEmpty()
-  id!: string;
-
-  @IsArray()
-  items!: CartItem[];
-}
