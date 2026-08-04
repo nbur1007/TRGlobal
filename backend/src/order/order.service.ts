@@ -31,4 +31,8 @@ export class OrderService {
       hasMore: skip + orders.length < total,
     };
   }
+
+  async createOrder() {}
+
+  async updateOrderStatus() {}
 }
