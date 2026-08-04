@@ -10,10 +10,14 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    ThrottlerModule.forRoot({
+      throttlers: [{ ttl: 60000, limit: 10}]
+    }),
     AuthModule,
     UserModule,
     CatalogueModule,
