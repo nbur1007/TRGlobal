@@ -3,6 +3,7 @@ import { OrderService } from './order.service';
 import { ModerateThrottle } from '../common/decorators/custom-throttler.decorator';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
+import type { Request } from 'express';
 
 @Controller('order')
 export class OrderController {
@@ -11,7 +12,10 @@ export class OrderController {
   @Get('history')
   @ModerateThrottle()
   @Roles(Role.CUSTOMER)
-  getHistory(@Req() req: Request) {}
+  getHistory(@Req() req: Request) {
+    const user = req.user as { id: string };
+    return this.orderService.getHistory(user.id);
+  }
 
   @Post('create-order')
   @ModerateThrottle()
