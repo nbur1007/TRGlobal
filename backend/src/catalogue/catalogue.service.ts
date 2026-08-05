@@ -18,11 +18,18 @@ export class CatalogueService {
   constructor(private prismaService: PrismaService) {}
 
   async getProducts(paginationDto: PaginationDto) {
-    const pageContents = await this.prismaService.product.findMany({
-      skip: paginationDto.skip,
-      take: paginationDto.take,
-    });
-    return pageContents;
+    const { skip, take } = paginationDto;
+
+    const [products, total] = await this.prismaService.$transaction([
+      this.prismaService.product.findMany({
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take,
+      }),
+      this.prismaService.product.count(),
+    ]);
+
+    return { products, total, skip, take, hasMore: skip + products.length < total };
   }
 
   async getCategories() {
@@ -31,14 +38,20 @@ export class CatalogueService {
   }
 
   async getProductsByCategory(productQueryDto: ProductQueryDto) {
-    const page = await this.prismaService.product.findMany({
-      where: {
-        categoryId: productQueryDto.categoryId,
-      },
-      skip: productQueryDto.skip,
-      take: productQueryDto.take,
-    });
-    return page;
+    const { categoryId, skip, take } = productQueryDto;
+    const where = { categoryId };
+
+    const [products, total] = await this.prismaService.$transaction([
+      this.prismaService.product.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take,
+      }),
+      this.prismaService.product.count({ where }),
+    ]);
+
+    return { products, total, skip, take, hasMore: skip + products.length < total };
   }
 
   async getDetails(product: ProductByIdDto) {
