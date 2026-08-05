@@ -35,4 +35,8 @@ export class OrderService {
   async createOrder() {}
 
   async updateOrderStatus() {}
+
+  async getAllOrders() {}
+
+  async getOrderByUser() {}
 }

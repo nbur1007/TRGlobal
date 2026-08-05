@@ -1,6 +1,9 @@
 import { Controller, Get, Patch, Post, Query, Req } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { ModerateThrottle } from '../common/decorators/custom-throttler.decorator';
+import {
+  ModerateThrottle,
+  StrictThrottle,
+} from '../common/decorators/custom-throttler.decorator';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import type { Request } from 'express';
@@ -17,6 +20,16 @@ export class OrderController {
     const user = req.user as { id: string };
     return this.orderService.getHistory(user.id, paginationDto);
   }
+
+  @Get('all-orders')
+  @StrictThrottle()
+  @Roles(Role.ADMIN)
+  getAllOrders() {}
+
+  @Get('orders-by-user')
+  @ModerateThrottle()
+  @Roles(Role.ADMIN)
+  getOrdersByUser() {}
 
   @Post('create-order')
   @ModerateThrottle()
