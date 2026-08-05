@@ -10,7 +10,7 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
 import { CatalogueModule } from './catalogue/catalogue.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
-import { ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -27,6 +27,10 @@ import { ThrottlerModule } from '@nestjs/throttler';
   controllers: [AppController],
   providers: [
     AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
