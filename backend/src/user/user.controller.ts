@@ -20,6 +20,7 @@ import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
 import type { Request } from 'express';
+import { ModerateThrottle, StrictThrottle } from '../common/decorators/custom-throttler.decorator';
 
 @Controller('user')
 export class UserController {
@@ -27,6 +28,7 @@ export class UserController {
 
   @Public()
   @Post('create')
+  @StrictThrottle()
   @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: UserDto) {
     return this.userService.createUser(createUserDto);
@@ -43,6 +45,7 @@ export class UserController {
   @Get('list_by_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   listUsers(@Body() user: AdminDto) {
     return this.userService.listByRole(user.role);
   }
@@ -50,6 +53,7 @@ export class UserController {
   @Get('all_users')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   listAll() {
     return this.userService.listAll();
   }
@@ -57,6 +61,7 @@ export class UserController {
   @Post('create_admin')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   createAdmin(@Body() adminCreateUserDto: AdminDto) {
     return this.userService.createAdmin(adminCreateUserDto);
   }
@@ -64,6 +69,7 @@ export class UserController {
   @Patch('update_role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   promoteUser(@Body() user: UpdateUserDto) {
     return this.userService.updateRole(user.id, user.role);
   }
@@ -79,6 +85,7 @@ export class UserController {
   @Delete('delete_user')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   deleteUser(@Body() user: DeleteUserDto) {
     return this.userService.deleteUser(user.id);
   }

@@ -22,6 +22,7 @@ import {
   CreateCategoryDto,
   UpdateCategoryDto,
 } from './dto/category.dto';
+import { ModerateThrottle, RelaxedThrottle } from '../common/decorators/custom-throttler.decorator';
 
 @Controller('catalogue')
 export class CatalogueController {
@@ -29,60 +30,70 @@ export class CatalogueController {
 
   @Public()
   @Get('list-products')
+  @RelaxedThrottle()
   listProducts(@Query() paginationDto: PaginationDto) {
     return this.catalogueService.getProducts(paginationDto);
   }
 
   @Public()
   @Get('list-categories')
+  @RelaxedThrottle()
   listCategories() {
     return this.catalogueService.getCategories();
   }
 
   @Public()
   @Get('products-by-category')
+  @RelaxedThrottle()
   listProductsByCategory(@Query() productQueryDto: ProductQueryDto) {
     return this.catalogueService.getProductsByCategory(productQueryDto);
   }
 
   @Public()
   @Get('product-details')
+  @RelaxedThrottle()
   productDetails(@Query() productByIdDto: ProductByIdDto) {
     return this.catalogueService.getDetails(productByIdDto);
   }
 
   @Delete('delete-product')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   deleteProduct(@Query() productByIdDto: ProductByIdDto) {
     return this.catalogueService.deleteProduct(productByIdDto);
   }
 
   @Patch('update-product')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   updateProduct(@Body() editProductDto: CreateOrEditProductDto) {
     return this.catalogueService.updateProduct(editProductDto);
   }
 
   @Delete('delete-category')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   deleteCategory(@Query() categoryDto: CategorySelectDto) {
     return this.catalogueService.deleteCategory(categoryDto);
   }
 
   @Patch('update-category')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   updateCategory(@Body() updateCategoryDto: UpdateCategoryDto) {
     return this.catalogueService.updateCategory(updateCategoryDto);
   }
 
   @Post('create-category')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   createCategory(@Body() createCategoryDto: CreateCategoryDto) {
     return this.catalogueService.createCategory(createCategoryDto);
   }
 
   @Post('create-product')
   @Roles(Role.ADMIN)
+  @ModerateThrottle()
   createProduct(@Body() createProductDto: CreateOrEditProductDto) {
     return this.catalogueService.createProduct(createProductDto);
   }
