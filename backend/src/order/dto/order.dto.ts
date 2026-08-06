@@ -11,9 +11,8 @@ export class OrderUpdateDto {
     status!: OrderStatus;
 }
 
-export class OrderDto {
+export class OrderByUserDto {
+    @IsNotEmpty()
     @IsUUID()
     userId!: string;
-
-    items!: [OrderItem]
 }

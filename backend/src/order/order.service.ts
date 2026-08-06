@@ -49,6 +49,7 @@ export class OrderService {
           throw new HttpException('Order Not Found.', HttpStatus.NOT_FOUND);
         }
       }
+      throw err;
     }
   }
 
@@ -70,5 +71,28 @@ export class OrderService {
     return { orders, total, skip, take, hasMore: skip + orders.length < total };
   }
 
-  async getOrderByUser() {}
+  async getOrdersByUser(user: string, paginationDto: PaginationDto) {
+    const { skip, take } = paginationDto;
+
+    const [orders, total] = await this.prismaService.$transaction([
+      this.prismaService.order.findMany({
+        where: { userId: user },
+        orderBy: { createdAt: 'desc' },
+        include: { items: true },
+        skip,
+        take,
+      }),
+      this.prismaService.order.count({
+        where: { userId: user },
+      }),
+    ]);
+
+    return {
+      orders,
+      total,
+      skip,
+      take,
+      hasMore: skip + orders.length < total,
+    };
+  }
 }
