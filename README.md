@@ -1,4 +1,4 @@
- TRGlobal — Mini E-Commerce Platform
+# TRGlobal — Mini E-Commerce Platform
  
 A full-stack e-commerce application built with NestJS, Prisma, PostgreSQL, and React.
  
