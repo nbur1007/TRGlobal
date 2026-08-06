@@ -35,7 +35,23 @@ export class OrderService {
 
   async updateOrderStatus() {}
 
-  async getAllOrders() {}
+  async listAllOrders(paginationDto: PaginationDto) {
+    const { skip, take } = paginationDto;
+
+    const [orders, total] = await this.prismaService.$transaction([
+      this.prismaService.order.findMany({
+        orderBy: { 
+          userId: 'asc',
+          createdAt: 'desc',
+        },
+        skip,
+        take,
+      }),
+      this.prismaService.order.count(),
+    ]);
+
+    return { orders, total, skip, take, hasMore: skip + orders.length < total };
+  }
 
   async getOrderByUser() {}
 }

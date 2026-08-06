@@ -24,7 +24,9 @@ export class OrderController {
   @Get('all-orders')
   @StrictThrottle()
   @Roles(Role.ADMIN)
-  getAllOrders() {}
+  listAllOrders(@Query() paginationDto: PaginationDto) {
+    return this.orderService.listAllOrders(paginationDto);
+  }
 
   @Get('orders-by-user')
   @ModerateThrottle()
@@ -34,7 +36,7 @@ export class OrderController {
   @Post('create-order')
   @ModerateThrottle()
   @Roles(Role.CUSTOMER)
-  createOrder(@Req() req:Request) {}
+  createOrder(@Req() req: Request) {}
 
   @Patch('update-order-status')
   @Roles(Role.ADMIN)
