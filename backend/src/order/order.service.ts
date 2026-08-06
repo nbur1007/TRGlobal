@@ -1,6 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
+import { OrderUpdateDto } from './dto/order.dto';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 
 @Injectable()
 export class OrderService {
@@ -33,14 +35,29 @@ export class OrderService {
 
   async createOrder() {}
 
-  async updateOrderStatus() {}
+  async updateOrderStatus(order: OrderUpdateDto) {
+    try {
+      const updatedOrder = await this.prismaService.order.update({
+        where: { id: order.id },
+        data: { status: order.status },
+      });
+
+      return updatedOrder;
+    } catch (err) {
+      if (err instanceof PrismaClientKnownRequestError) {
+        if (err.code === 'P2025') {
+          throw new HttpException('Order Not Found.', HttpStatus.NOT_FOUND);
+        }
+      }
+    }
+  }
 
   async listAllOrders(paginationDto: PaginationDto) {
     const { skip, take } = paginationDto;
 
     const [orders, total] = await this.prismaService.$transaction([
       this.prismaService.order.findMany({
-        orderBy: { 
+        orderBy: {
           userId: 'asc',
           createdAt: 'desc',
         },

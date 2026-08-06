@@ -8,6 +8,7 @@ import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import type { Request } from 'express';
 import { PaginationDto } from '../catalogue/dto/product.dto';
+import { OrderUpdateDto } from './dto/order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -40,5 +41,7 @@ export class OrderController {
 
   @Patch('update-order-status')
   @Roles(Role.ADMIN)
-  updateOrderStatus() {}
+  updateOrderStatus(@Query() orderUpdateDto: OrderUpdateDto) {
+    return this.orderService.updateOrderStatus(orderUpdateDto);
+  }
 }
