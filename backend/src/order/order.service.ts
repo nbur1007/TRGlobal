@@ -33,7 +33,9 @@ export class OrderService {
     };
   }
 
-  async createOrder() {}
+  async createOrder() {
+    //----------------------------------- TODO ----------------------------------//
+  }
 
   async updateOrderStatus(order: OrderUpdateDto) {
     try {
