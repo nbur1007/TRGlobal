@@ -3,6 +3,8 @@ import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
 import { OrderUpdateDto } from './dto/order.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
+import { fromCents, toCents } from '../utils/money';
+import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class OrderService {
@@ -44,9 +46,55 @@ export class OrderService {
         throw new HttpException('Cart not found.', HttpStatus.NOT_FOUND);
       }
 
-      for (const item of cart.items) {
-
+      if (cart.items.length === 0) {
+        throw new HttpException('Cart is empty.', HttpStatus.BAD_REQUEST);
       }
+
+      let totalCents = 0;
+
+      for (const item of cart.items) {
+        const itemsOutofStock = [];
+        const result = await tx.product.updateMany({
+          where: {
+            id: item.productId,
+            stock: { gte: item.quantity },
+          },
+          data: {
+            stock: { decrement: item.quantity },
+          },
+        });
+
+        if (result.count === 0) {
+          throw new HttpException(
+            `Insufficient stock for ${item.product.name}.`,
+            HttpStatus.CONFLICT,
+          );
+        }
+
+        const lineCents = toCents(item.product.price) * item.quantity;
+
+        totalCents += lineCents;
+      }
+
+      const lineItems = cart.items.map((item) => ({
+        productId: item.productId,
+        productName: item.product.name,
+        unitPrice: item.product.price,
+        quantity: item.quantity,
+        lineTotal: fromCents(toCents(item.product.price) * item.quantity),
+      }));
+
+      const order = await tx.order.create({
+        data: {
+          userId: user,
+          total: fromCents(totalCents),
+          items: { create: lineItems },
+        },
+      });
+
+      tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+
+      return order;
     });
   }
 
