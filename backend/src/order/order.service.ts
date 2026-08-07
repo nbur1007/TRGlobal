@@ -34,25 +34,13 @@ export class OrderService {
   }
 
   async createOrder(user: string) {
-    try {
-      const cart = await this.prismaService.cart.findUnique({
+    return this.prismaService.$transaction(async (tx) => {
+      const cart = await tx.cart.findUnique({
         where: { userId: user },
         include: { items: true },
       });
-    } catch (err) {
-      if (err instanceof PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new HttpException(
-            'Cart Not Found. Cannot Make Order',
-            HttpStatus.NOT_FOUND,
-          );
-        }
-      }
-      throw err;
-    }
 
-    return this.prismaService.$transaction(async (tx) => {
-       
+      
     });
   }
 
