@@ -70,8 +70,6 @@ model Product {
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  // Restrict: deleting a category that still has products is a 409.
-  // Admin must reassign or delete the products first.
   category   Category    @relation(fields: [categoryId], references: [id], onDelete: Restrict)
   cartItems  CartItem[]
   orderItems OrderItem[]
@@ -108,15 +106,14 @@ model CartItem {
   cart    Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  // One row per product per cart — "add to cart" increments quantity
-  // instead of inserting a duplicate. Use prisma.cartItem.upsert().
+
   @@unique([cartId, productId])
   @@index([productId])
   @@map("cart_items")
 }
 
 // ---------------------------------------------------------------------------
-// Orders (immutable snapshot — never read live product data)
+// Orders
 // ---------------------------------------------------------------------------
 
 model Order {
@@ -140,11 +137,9 @@ model OrderItem {
   id      String @id @default(uuid()) @db.Uuid
   orderId String @db.Uuid
 
-  // Nullable link back to the catalog: kept for reporting, but the order
-  // must remain readable if the product is later deleted.
   productId String? @db.Uuid
 
-  // Snapshot fields — copied at checkout, never updated afterwards.
+  // Snapshot fields
   productName String
   unitPrice   Decimal @db.Decimal(10, 2)
   quantity    Int
