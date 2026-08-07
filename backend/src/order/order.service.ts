@@ -37,10 +37,16 @@ export class OrderService {
     return this.prismaService.$transaction(async (tx) => {
       const cart = await tx.cart.findUnique({
         where: { userId: user },
-        include: { items: true },
+        include: { items: { include: { product: true } } },
       });
 
-      
+      if (cart === null) {
+        throw new HttpException('Cart not found.', HttpStatus.NOT_FOUND);
+      }
+
+      for (const item of cart.items) {
+
+      }
     });
   }
 
