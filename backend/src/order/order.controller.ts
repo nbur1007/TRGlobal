@@ -39,7 +39,10 @@ export class OrderController {
   @Post('create-order')
   @ModerateThrottle()
   @Roles(Role.CUSTOMER)
-  createOrder(@Req() req: Request) {}
+  createOrder(@Req() req: Request) {
+    const user = req.user as { id }
+    return this.orderService.createOrder(user.id)
+  }
 
   @Patch('update-order-status')
   @Roles(Role.ADMIN)
