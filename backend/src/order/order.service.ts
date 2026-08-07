@@ -4,7 +4,6 @@ import { PaginationDto } from '../catalogue/dto/product.dto';
 import { OrderUpdateDto } from './dto/order.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { fromCents, toCents } from '../utils/money';
-import { Prisma } from 'generated/prisma/client';
 
 @Injectable()
 export class OrderService {
