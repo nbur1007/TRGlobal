@@ -183,12 +183,18 @@ export class OrderService {
     };
   }
 
-  async cancelRequest(order: OrderUpdateDto) {
-    await this.prismaService.order.update({
-      where: { 
+  async cancelRequest(userId: string, order: OrderUpdateDto) {
+    const result = await this.prismaService.order.updateMany({
+      where: {
         id: order.id,
+        userId,
+        status: OrderStatus.PENDING,
       },
-      data: {cancelRequest: true},
-    })
+      data: { cancelRequest: true },
+    });
+
+    if (result.count === 0) {
+      throw new HttpException('Order not found.', HttpStatus.NOT_FOUND);
+    }
   }
 }

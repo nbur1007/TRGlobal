@@ -45,7 +45,7 @@ export class OrderController {
   @Get('cancel-requests')
   @ModerateThrottle()
   @Roles(Role.ADMIN)
-getCancelRequests(@Query() paginationDto: PaginationDto) {
+  getCancelRequests(@Query() paginationDto: PaginationDto) {
     return this.orderService.getCancelRequests(paginationDto);
   }
 
@@ -65,7 +65,8 @@ getCancelRequests(@Query() paginationDto: PaginationDto) {
 
   @Patch('cancel-request')
   @Roles(Role.CUSTOMER)
-  cancelRequest(@Query() orderUpdateDto: OrderUpdateDto) {
-    return this.orderService.cancelRequest(orderUpdateDto)
+  cancelRequest(@Req() req: Request, @Query() orderUpdateDto: OrderUpdateDto) {
+    const user = req.user as { id: string };
+    return this.orderService.cancelRequest(user.id, orderUpdateDto);
   }
 }
