@@ -4,6 +4,8 @@ import { PaginationDto } from '../catalogue/dto/product.dto';
 import { OrderUpdateDto } from './dto/order.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { fromCents, toCents } from '../utils/money';
+import { OrderStatus } from 'generated/prisma/enums';
+import { truncate } from 'node:fs/promises';
 
 @Injectable()
 export class OrderService {
@@ -155,5 +157,38 @@ export class OrderService {
       take,
       hasMore: skip + orders.length < total,
     };
+  }
+
+  async getCancelRequests(paginationDto: PaginationDto) {
+    const { skip, take } = paginationDto;
+
+    const [orders, total] = await this.prismaService.$transaction([
+      this.prismaService.order.findMany({
+        where: { cancelRequest: true },
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take,
+      }),
+      this.prismaService.order.count({
+        where: { cancelRequest: true },
+      }),
+    ]);
+
+    return {
+      orders,
+      total,
+      skip,
+      take,
+      hasMore: skip + orders.length < total,
+    };
+  }
+
+  async cancelRequest(order: OrderUpdateDto) {
+    await this.prismaService.order.update({
+      where: { 
+        id: order.id,
+      },
+      data: {cancelRequest: true},
+    })
   }
 }

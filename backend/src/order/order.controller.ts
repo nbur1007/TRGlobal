@@ -32,21 +32,40 @@ export class OrderController {
   @Get('orders-by-user')
   @ModerateThrottle()
   @Roles(Role.ADMIN)
-  getOrdersByUser(@Body() orderByUserDto: OrderByUserDto, @Query() paginationDto: PaginationDto) {
-    return this.orderService.getOrdersByUser(orderByUserDto.userId, paginationDto);
+  getOrdersByUser(
+    @Body() orderByUserDto: OrderByUserDto,
+    @Query() paginationDto: PaginationDto,
+  ) {
+    return this.orderService.getOrdersByUser(
+      orderByUserDto.userId,
+      paginationDto,
+    );
+  }
+
+  @Get('cancel-requests')
+  @ModerateThrottle()
+  @Roles(Role.ADMIN)
+getCancelRequests(@Query() paginationDto: PaginationDto) {
+    return this.orderService.getCancelRequests(paginationDto);
   }
 
   @Post('create-order')
   @ModerateThrottle()
   @Roles(Role.CUSTOMER)
   createOrder(@Req() req: Request) {
-    const user = req.user as { id }
-    return this.orderService.createOrder(user.id)
+    const user = req.user as { id: string };
+    return this.orderService.createOrder(user.id);
   }
 
   @Patch('update-order-status')
   @Roles(Role.ADMIN)
   updateOrderStatus(@Query() orderUpdateDto: OrderUpdateDto) {
     return this.orderService.updateOrderStatus(orderUpdateDto);
+  }
+
+  @Patch('cancel-request')
+  @Roles(Role.CUSTOMER)
+  cancelRequest(@Query() orderUpdateDto: OrderUpdateDto) {
+    return this.orderService.cancelRequest(orderUpdateDto)
   }
 }
