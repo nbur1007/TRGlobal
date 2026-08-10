@@ -92,7 +92,7 @@ export class OrderService {
         },
       });
 
-      tx.cartItem.deleteMany({ where: { cartId: cart.id } });
+      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
 
       return order;
     });
