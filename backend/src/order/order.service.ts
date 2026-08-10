@@ -52,7 +52,6 @@ export class OrderService {
       let totalCents = 0;
 
       for (const item of cart.items) {
-        const itemsOutofStock = [];
         const result = await tx.product.updateMany({
           where: {
             id: item.productId,
