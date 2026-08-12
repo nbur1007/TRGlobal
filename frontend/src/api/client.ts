@@ -15,7 +15,7 @@ export function clearToken(): void {
 }
 
 export class ApiError extends Error {
-  status!: number;
+  status: number;
 
   constructor(message: string, status: number) {
     super(message);
