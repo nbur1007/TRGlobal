@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
 import { OrderUpdateDto } from './dto/order.dto';
@@ -37,65 +37,69 @@ export class OrderService {
   }
 
   async createOrder(user: string) {
-    return this.prismaService.$transaction(async (tx) => {
-      const cart = await tx.cart.findUnique({
-        where: { userId: user },
-        include: { items: { include: { product: true } } },
-      });
+     try { 
+      return this.prismaService.$transaction(async (tx) => {
+        const cart = await tx.cart.findUnique({
+          where: { userId: user },
+          include: { items: { include: { product: true } } },
+        });
 
-      if (cart === null) {
-        throw new HttpException('Cart not found.', HttpStatus.NOT_FOUND);
-      }
+        if (cart === null) {
+          throw new HttpException('Cart not found.', HttpStatus.NOT_FOUND);
+        }
 
-      if (cart.items.length === 0) {
-        throw new HttpException('Cart is empty.', HttpStatus.BAD_REQUEST);
-      }
+        if (cart.items.length === 0) {
+          throw new HttpException('Cart is empty.', HttpStatus.BAD_REQUEST);
+        }
 
-      let totalCents = 0;
+        let totalCents = 0;
 
-      for (const item of cart.items) {
-        const result = await tx.product.updateMany({
-          where: {
-            id: item.productId,
-            stock: { gte: item.quantity },
-          },
+        for (const item of cart.items) {
+          const result = await tx.product.updateMany({
+            where: {
+              id: item.productId,
+              stock: { gte: item.quantity },
+            },
+            data: {
+              stock: { decrement: item.quantity },
+            },
+          });
+
+          if (result.count === 0) {
+            throw new HttpException(
+              `Insufficient stock for ${item.product.name}.`,
+              HttpStatus.CONFLICT,
+            );
+          }
+
+          const lineCents = toCents(item.product.price) * item.quantity;
+
+          totalCents += lineCents;
+        }
+
+        const lineItems = cart.items.map((item) => ({
+          productId: item.productId,
+          productName: item.product.name,
+          unitPrice: item.product.price,
+          quantity: item.quantity,
+          lineTotal: fromCents(toCents(item.product.price) * item.quantity),
+        }));
+
+        const order = await tx.order.create({
           data: {
-            stock: { decrement: item.quantity },
+            userId: user,
+            total: fromCents(totalCents),
+            items: { create: lineItems },
           },
         });
 
-        if (result.count === 0) {
-          throw new HttpException(
-            `Insufficient stock for ${item.product.name}.`,
-            HttpStatus.CONFLICT,
-          );
-        }
+        await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
 
-        const lineCents = toCents(item.product.price) * item.quantity;
-
-        totalCents += lineCents;
-      }
-
-      const lineItems = cart.items.map((item) => ({
-        productId: item.productId,
-        productName: item.product.name,
-        unitPrice: item.product.price,
-        quantity: item.quantity,
-        lineTotal: fromCents(toCents(item.product.price) * item.quantity),
-      }));
-
-      const order = await tx.order.create({
-        data: {
-          userId: user,
-          total: fromCents(totalCents),
-          items: { create: lineItems },
-        },
+        return order;
       });
-
-      await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
-
-      return order;
-    });
+     } catch (err) {
+        throw new InternalServerErrorException('Something went wrong. Our bad...');
+     }
   }
 
   async updateOrderStatus(order: OrderUpdateDto) {
