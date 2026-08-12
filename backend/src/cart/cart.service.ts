@@ -43,24 +43,6 @@ export class CartService {
     };
   }
 
-  async deleteCart(userId: string) {
-    try {
-      await this.prismaService.cart.delete({
-        where: {
-          userId: userId,
-        },
-      });
-      return;
-    } catch (err) {
-      if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === 'P2025') {
-          throw new HttpException('Cart not found', HttpStatus.NOT_FOUND);
-        }
-      }
-      throw err;
-    }
-  }
-
   async addToCart(userId: string, cartItem: CartItemDto) {
     const cart = await this.prismaService.cart.findUnique({
       where: { userId },

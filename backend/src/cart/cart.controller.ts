@@ -29,17 +29,4 @@ export class CartController {
     const user = req.user as { id: string };
     return this.cartsService.removeFromCart(user.id, cartItemDto);
   }
-
-  @Delete('delete-own-cart')
-  @Roles(Role.CUSTOMER)
-  deleteOwnCart(@Req() req: Request) {
-    const user = req.user as { id: string };
-    return this.cartsService.deleteCart(user.id);
-  }
-
-  @Delete('delete-other-cart')
-  @Roles(Role.ADMIN)
-  deleteOtherCart(@Query() cartSearchDto: CartSearchDto) {
-    return this.cartsService.deleteCart(cartSearchDto.userId);
-  }
 }
