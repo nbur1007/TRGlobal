@@ -1,7 +1,8 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import {
-  CreateOrEditProductDto,
+  CreateProductDto,
+  EditProductDto,
   PaginationDto,
   ProductByIdDto,
   ProductQueryDto,
@@ -67,7 +68,7 @@ export class CatalogueService {
     return details;
   }
 
-  async createProduct(product: CreateOrEditProductDto){
+  async createProduct(product: CreateProductDto){
     try {
       const newCategory = await this.prismaService.product.create({
         data: {
@@ -109,7 +110,7 @@ export class CatalogueService {
     }
   }
 
-  async updateProduct(editProductDto: CreateOrEditProductDto) {
+  async updateProduct(editProductDto: EditProductDto) {
     try {
       const updatedProduct = await this.prismaService.product.update({
         where: { id: editProductDto.id },

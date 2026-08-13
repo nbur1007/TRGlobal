@@ -9,11 +9,13 @@ export class CategorySelectDto {
 export class UpdateCategoryDto extends CategorySelectDto {
   @IsOptional()
   @IsString()
-  name!: string;
+  @IsNotEmpty()
+  name?: string;
 
   @IsOptional()
   @IsString()
-  slug!: string;
+  @IsNotEmpty()
+  slug?: string;
 }
 
 export class CreateCategoryDto {

@@ -8,6 +8,7 @@ import {
   IsUrl,
   IsUUID,
   Max,
+  Min,
 } from 'class-validator';
 
 export class PaginationDto {
@@ -35,26 +36,61 @@ export class ProductByIdDto {
   id!: string;
 }
 
-export class CreateOrEditProductDto extends ProductByIdDto {
+export class CreateProductDto {
   @IsNotEmpty()
   @IsString()
   name!: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
-  description!: string;
+  description?: string;
 
-  @IsNotEmpty()
+  @Type(() => Number)
   @IsNumber()
+  @IsPositive()
   price!: number;
 
+  @Type(() => Number)
   @IsNumber()
+  @Min(0)
   stock!: number;
 
+  @IsOptional()
   @IsUrl()
-  imageUrl!: string;
+  imageUrl?: string;
 
   @IsNotEmpty()
   @IsUUID()
   categoryId!: string;
+}
+
+export class EditProductDto extends ProductByIdDto {
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @IsPositive()
+  price?: number;
+
+  @IsOptional()
+  @Type(() => Number)
+  @IsNumber()
+  @Min(0)
+  stock?: number;
+
+  @IsOptional()
+  @IsUrl()
+  imageUrl?: string;
+
+  @IsOptional()
+  @IsUUID()
+  categoryId?: string;
 }

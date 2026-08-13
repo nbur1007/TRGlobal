@@ -24,3 +24,33 @@ export type ProductListResponse = {
   take: number;
   hasMore: boolean;
 };
+
+export type ProductUpdateData = {
+  id: string;
+  name?: string;
+  description?: string;
+  price?: string;
+  stock?: number;
+  imageUrl?: string;
+  categoryId?: string;
+};
+
+export type ProductCreationData = {
+  name: string;
+  description: string;
+  price: number;
+  stock: number;
+  imageUrl: string;
+  categoryId: string;
+};
+
+export type CategoryUpdateData = {
+  id: string;
+  name?: string;
+  slug?: string;
+};
+
+export type CategoryCreationData = {
+  name: string;
+  slug: string;
+};
