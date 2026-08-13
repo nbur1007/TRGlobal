@@ -54,3 +54,16 @@ export type CategoryCreationData = {
   name: string;
   slug: string;
 };
+
+export type AuthorizationPayload = {
+    email: string;
+    password: string;
+}
+
+export type AuthStatus = {
+    id: string;
+    email: string;
+    role: string;
+    iat: number;
+    exp: number;
+}
