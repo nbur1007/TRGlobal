@@ -11,6 +11,16 @@ export type Product = {
 };
 
 export type Category = {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ProductListResponse = {
+  products: Product[];
+  total: number;
+  skip: number;
+  take: number;
+  hasMore: boolean;
 };
