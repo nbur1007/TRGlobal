@@ -79,7 +79,34 @@ export type AuthStatus = {
 // User
 //-----------------------------------------------
 
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  name: string;
+  role: string;
+}
 
+export type UserListResponse = {
+  users: User[]
+  total: number;
+  skip: number;
+  take: number;
+  hasMore: boolean;
+}
+
+export type UserCreationData = {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export type AdminCreationData = {
+  email: string;
+  password: string;
+  name: string;
+  role: "ADMIN"
+}
 
 //-----------------------------------------------
 // Cart
