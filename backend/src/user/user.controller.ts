@@ -44,7 +44,7 @@ export class UserController {
     return this.userService.findUser(user.id);
   }
 
-  @Get('list_by_role')
+  @Get('list-by-role')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
@@ -52,7 +52,7 @@ export class UserController {
     return this.userService.listByRole(user.role);
   }
 
-  @Get('all_users')
+  @Get('all-users')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
@@ -60,7 +60,7 @@ export class UserController {
     return this.userService.listAll(paginationDto);
   }
 
-  @Post('create_admin')
+  @Post('create-admin')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
@@ -68,7 +68,7 @@ export class UserController {
     return this.userService.createAdmin(adminCreateUserDto);
   }
 
-  @Delete('delete_self')
+  @Delete('delete-self')
   @Roles(Role.ADMIN, Role.CUSTOMER)
   @UsePipes(ValidationPipe)
   deleteSelf(@Req() req: Request) {
@@ -76,7 +76,7 @@ export class UserController {
     return this.userService.deleteUser(user.id);
   }
 
-  @Delete('delete_user')
+  @Delete('delete-user')
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()

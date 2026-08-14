@@ -63,17 +63,19 @@ export type CategoryCreationData = {
 //-----------------------------------------------
 
 export type AuthorizationPayload = {
-    email: string;
-    password: string;
-}
+  email: string;
+  password: string;
+};
+
+export type LoginResponse = { access_token: string };
 
 export type AuthStatus = {
-    id: string;
-    email: string;
-    role: string;
-    iat: number;
-    exp: number;
-}
+  id: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
+};
 
 //-----------------------------------------------
 // User
@@ -82,37 +84,34 @@ export type AuthStatus = {
 export type User = {
   id: string;
   email: string;
-  password: string;
   name: string;
   role: string;
-}
+};
 
 export type UserListResponse = {
-  users: User[]
+  users: User[];
   total: number;
   skip: number;
   take: number;
   hasMore: boolean;
-}
+};
 
 export type UserCreationData = {
   email: string;
   password: string;
   name: string;
-}
+};
 
 export type AdminCreationData = {
   email: string;
   password: string;
   name: string;
-  role: "ADMIN"
-}
+  role: "ADMIN";
+};
 
 //-----------------------------------------------
 // Cart
 //-----------------------------------------------
-
-
 
 //-----------------------------------------------
 // Order

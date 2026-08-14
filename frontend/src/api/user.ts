@@ -23,7 +23,7 @@ export function getAllUsers() {
 }
 
 export function createAdmin(data: AdminCreationData) {
-  return api.get<User>("/user/create-admin", data);
+  return api.post<User>("/user/create-admin", data);
 }
 
 export function deleteSelf(id: string) {

@@ -1,8 +1,8 @@
 import { api } from "./client";
-import { type AuthStatus, type AuthorizationPayload } from "./types";
+import { type AuthStatus, type AuthorizationPayload, type LoginResponse } from "./types";
 
 export function login(payload: AuthorizationPayload) {
-  return api.post<AuthorizationPayload>("/auth/login", payload);
+  return api.post<LoginResponse>("/auth/login", payload);
 }
 
 export function status() {

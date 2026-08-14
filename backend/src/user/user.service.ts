@@ -146,7 +146,7 @@ export class UserService {
         skip,
         take,
       }),
-      this.prismaService.product.count(),
+      this.prismaService.user.count(),
     ]);
 
     return { users, total, skip, take, hasMore: skip + users.length < total };
