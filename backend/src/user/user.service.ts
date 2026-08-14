@@ -8,6 +8,7 @@ import { UserDto, AdminDto } from './dto/user.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
 import { Role } from 'generated/prisma/enums';
+import { PaginationDto } from '../catalogue/dto/product.dto';
 
 @Injectable()
 export class UserService {
@@ -40,10 +41,9 @@ export class UserService {
           name: createUserDto.name,
           email: createUserDto.email,
           passwordHash: password,
-          cart: { create: {} }
+          cart: { create: {} },
         },
       });
-      
     } catch (err) {
       throw new InternalServerErrorException(err);
     }
@@ -122,20 +122,6 @@ export class UserService {
     }
   }
 
-  async updateRole(id: string, role: Role) {
-    try {
-      await this.prismaService.user.update({
-        where: { id: id },
-        data: { role: role },
-      });
-    } catch (err) {
-      throw new HttpException(
-        'This user does not exist.',
-        HttpStatus.NOT_FOUND,
-      );
-    }
-  }
-
   async listByRole(role: Role) {
     try {
       const userList = await this.prismaService.user.findMany({
@@ -150,13 +136,19 @@ export class UserService {
     }
   }
 
-  async listAll() {
-    const userList = await this.prismaService.user.findMany({
-      omit: {
-        passwordHash: true,
-      },
-    });
+  async listAll(paginationDto: PaginationDto) {
+    const { skip, take } = paginationDto;
 
-    return userList;
+    const [users, total] = await this.prismaService.$transaction([
+      this.prismaService.user.findMany({
+        orderBy: { createdAt: 'desc' },
+        omit: { passwordHash: true },
+        skip,
+        take,
+      }),
+      this.prismaService.product.count(),
+    ]);
+
+    return { users, total, skip, take, hasMore: skip + users.length < total };
   }
 }

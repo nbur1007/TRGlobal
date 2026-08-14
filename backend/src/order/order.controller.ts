@@ -63,7 +63,7 @@ export class OrderController {
     return this.orderService.updateOrderStatus(orderUpdateDto);
   }
 
-  @Patch('cancel-request')
+  @Patch('cancel-order')
   @Roles(Role.CUSTOMER)
   cancelRequest(@Req() req: Request, @Query() orderUpdateDto: OrderUpdateDto) {
     const user = req.user as { id: string };
