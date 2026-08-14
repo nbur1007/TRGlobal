@@ -1,3 +1,6 @@
+//-----------------------------------------------
+// Catalogue
+//-----------------------------------------------
 export type Product = {
   id: string;
   name: string;
@@ -54,6 +57,10 @@ export type CategoryCreationData = {
   name: string;
   slug: string;
 };
+
+//-----------------------------------------------
+// Authorization
+//-----------------------------------------------
 
 export type AuthorizationPayload = {
     email: string;
