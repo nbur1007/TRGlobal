@@ -34,7 +34,6 @@ JWT_SECRET="your-generated-secret-here"
  
 # Password assigned to the seeded admin account
 SEED_ADMIN_PASSWORD="choose-a-password"
- 
 ```
  
 `.env` is gitignored and must never be committed.
