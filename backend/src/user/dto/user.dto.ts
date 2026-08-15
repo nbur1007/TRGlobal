@@ -6,6 +6,7 @@ import {
   IsEnum,
 } from 'class-validator';
 import { Role } from 'generated/prisma/enums';
+import { PaginationDto } from '../../catalogue/dto/product.dto';
 
 export class DeleteUserDto {
   @IsUUID()
@@ -37,4 +38,9 @@ export class AdminDto extends UserDto {
   @IsEnum(Role)
   @IsNotEmpty()
   role!: Role;
+}
+
+export class ListByRoleDto extends PaginationDto{
+  @IsEnum(Role)
+  role!: Role
 }

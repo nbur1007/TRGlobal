@@ -4,7 +4,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
-import { UserDto, AdminDto } from './dto/user.dto';
+import { UserDto, AdminDto, ListByRoleDto } from './dto/user.dto';
 import { PrismaService } from '../prisma.service';
 import { encodePassword } from '../utils/bcrypt';
 import { Role } from 'generated/prisma/enums';
@@ -122,18 +122,21 @@ export class UserService {
     }
   }
 
-  async listByRole(role: Role) {
-    try {
-      const userList = await this.prismaService.user.findMany({
-        where: { role: role },
-        omit: {
-          passwordHash: true,
-        },
-      });
-      return userList;
-    } catch (err) {
-      throw new InternalServerErrorException(err);
-    }
+  async listByRole(listByRoleDto: ListByRoleDto) {
+   const { skip, take } = listByRoleDto;
+
+    const [users, total] = await this.prismaService.$transaction([
+      this.prismaService.user.findMany({
+        where: {role: listByRoleDto.role},
+        orderBy: { createdAt: 'desc' },
+        omit: { passwordHash: true },
+        skip,
+        take,
+      }),
+      this.prismaService.user.count(),
+    ]);
+
+    return { users, total, skip, take, hasMore: skip + users.length < total };
   }
 
   async listAll(paginationDto: PaginationDto) {

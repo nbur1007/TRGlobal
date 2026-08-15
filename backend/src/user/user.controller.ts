@@ -15,6 +15,7 @@ import {
   AdminDto,
   UpdateUserDto,
   DeleteUserDto,
+  ListByRoleDto,
 } from './dto/user.dto';
 import { UserService } from './user.service';
 import { Roles } from '../auth/guards/roles/roles.decorator';
@@ -48,8 +49,8 @@ export class UserController {
   @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
-  listUsers(@Body() user: AdminDto) {
-    return this.userService.listByRole(user.role);
+  listUsers(@Query() query: ListByRoleDto) {
+    return this.userService.listByRole(query);
   }
 
   @Get('all-users')
