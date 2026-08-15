@@ -124,7 +124,11 @@ export type CartItem = {
   lineTotal: string; 
 }
 
-export type CartReturn = {
+export type Cart = {
+  id: string;
+  userId: string;
+  createdAt: string;
+  updatedAt: string;
   items: CartItem[];
   total: string;
   itemCount: number;
