@@ -3,7 +3,7 @@ import { OrderService } from './order.service';
 import {
   ModerateThrottle,
   StrictThrottle,
-} from '../common/decorators/custom-throttler.decorator';
+} from '../utils/custom-throttler.decorator';
 import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import type { Request } from 'express';

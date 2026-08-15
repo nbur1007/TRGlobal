@@ -23,7 +23,7 @@ import {
   CreateCategoryDto,
   UpdateCategoryDto,
 } from './dto/category.dto';
-import { ModerateThrottle, RelaxedThrottle } from '../common/decorators/custom-throttler.decorator';
+import { ModerateThrottle, RelaxedThrottle } from '../utils/custom-throttler.decorator';
 
 @Controller('catalogue')
 export class CatalogueController {

@@ -22,7 +22,7 @@ import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import { Public } from '../auth/guards/public.decorator';
 import type { Request } from 'express';
-import { ModerateThrottle, StrictThrottle } from '../common/decorators/custom-throttler.decorator';
+import { ModerateThrottle, StrictThrottle } from '../utils/custom-throttler.decorator';
 import { PaginationDto } from '../catalogue/dto/product.dto';
 
 @Controller('user')
