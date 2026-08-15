@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
-import { OrderUpdateDto } from './dto/order.dto';
+import { OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { fromCents, toCents } from '../utils/money';
 import { OrderStatus } from 'generated/prisma/enums';
@@ -138,19 +138,19 @@ export class OrderService {
     return { orders, total, skip, take, hasMore: skip + orders.length < total };
   }
 
-  async getOrdersByUser(user: string, paginationDto: PaginationDto) {
-    const { skip, take } = paginationDto;
+  async getOrdersByUser(query: OrderByUserDto) {
+    const { skip, take } = query;
 
     const [orders, total] = await this.prismaService.$transaction([
       this.prismaService.order.findMany({
-        where: { userId: user },
+        where: { userId: query.userId },
         orderBy: { createdAt: 'desc' },
         include: { items: true },
         skip,
         take,
       }),
       this.prismaService.order.count({
-        where: { userId: user },
+        where: { userId: query.userId },
       }),
     ]);
 

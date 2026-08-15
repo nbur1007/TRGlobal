@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsUUID } from "class-validator";
-import { OrderItem } from "generated/prisma/client";
 import { OrderStatus } from "generated/prisma/enums";
+import { PaginationDto } from "../../catalogue/dto/product.dto";
 
 export class OrderUpdateDto {
     @IsNotEmpty()
@@ -11,7 +11,7 @@ export class OrderUpdateDto {
     status!: OrderStatus;
 }
 
-export class OrderByUserDto {
+export class OrderByUserDto extends PaginationDto{
     @IsNotEmpty()
     @IsUUID()
     userId!: string;

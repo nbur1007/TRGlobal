@@ -32,14 +32,8 @@ export class OrderController {
   @Get('orders-by-user')
   @ModerateThrottle()
   @Roles(Role.ADMIN)
-  getOrdersByUser(
-    @Body() orderByUserDto: OrderByUserDto,
-    @Query() paginationDto: PaginationDto,
-  ) {
-    return this.orderService.getOrdersByUser(
-      orderByUserDto.userId,
-      paginationDto,
-    );
+  getOrdersByUser(@Query() query: OrderByUserDto) {
+    return this.orderService.getOrdersByUser(query);
   }
 
   @Get('cancel-requests')
