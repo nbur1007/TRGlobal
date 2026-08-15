@@ -113,6 +113,23 @@ export type AdminCreationData = {
 // Cart
 //-----------------------------------------------
 
+export type CartItem = {
+  id: string;
+  cartId: string;
+  productId: string;
+  quantity: number;
+  createdAt: string;
+  updatedAt: string;
+  product: Product;
+  lineTotal: string; 
+}
+
+export type CartReturn = {
+  items: CartItem[];
+  total: string;
+  itemCount: number;
+};
+
 //-----------------------------------------------
 // Order
 //-----------------------------------------------
