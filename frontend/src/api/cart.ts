@@ -1,8 +1,8 @@
 import { api } from "./client";
 import type { Cart, CartItem } from "./types";
 
-export function getCart(userId: string) {
-  return api.get<Cart>("/cart", { userId });
+export function getCart() {
+  return api.get<Cart>("/cart");
 }
 
 export function addToCart(data: CartItem) {

@@ -121,8 +121,8 @@ export type CartItem = {
   createdAt: string;
   updatedAt: string;
   product: Product;
-  lineTotal: string; 
-}
+  lineTotal: string;
+};
 
 export type Cart = {
   id: string;
@@ -137,3 +137,32 @@ export type Cart = {
 //-----------------------------------------------
 // Order
 //-----------------------------------------------
+
+export type Order = {
+  id: string;
+  status: string;
+  total: string;
+  createdAt: string;
+  updatedAt: string;
+  cancelRequest: boolean;
+  user: User;
+  items: OrderItem[];
+};
+
+export type OrderItem = {
+  id: string;
+  order: Order;
+  productId: string;
+  productName: string;
+  unitPrice: string;
+  quantity: number;
+  lineTotal: string;
+};
+
+export type OrderListReturn = {
+  orders: Order[];
+  total: number;
+  skip: number;
+  take: number;
+  hasMore: boolean;
+};

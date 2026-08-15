@@ -16,8 +16,9 @@ export function listProducts(skip: number, take: number) {
   });
 }
 
-export function listByCategory(skip: number, take: number) {
+export function listByCategory(id: string, skip: number, take: number) {
   return api.get<ProductListResponse>("/catalogue/products-by-category", {
+    id,
     skip,
     take,
   });
