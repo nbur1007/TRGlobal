@@ -1,5 +1,5 @@
 import { api } from "./client";
-import { type OrderListReturn } from "./types";
+import { type Order, type OrderListReturn, type UpdateOrderData } from "./types";
 
 export function getHistory(skip: number, take: number) {
   return api.get<OrderListReturn>("/order/history", { skip, take });
@@ -18,11 +18,17 @@ export function getOrdersByUser(userId: string, skip: number, take: number) {
 }
 
 export function getCancelRequests(skip: number, take: number) {
-    return api.get<OrderListReturn>("/order/cancel-requests", { skip, take });
+  return api.get<OrderListReturn>("/order/cancel-requests", { skip, take });
 }
 
-export function createOrder() {}
+export function createOrder() {
+  return api.post<Order>("/order/create-order");
+}
 
-export function updateOrderStatus() {}
+export function updateOrderStatus(newStatus: UpdateOrderData) {
+  return api.patch<Order>("/order/update-order-status", newStatus)
+}
 
-export function requestCancel() {}
+export function requestCancel() {
+  return api.patch<Order>("/order/cancel-order");
+}

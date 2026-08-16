@@ -32,7 +32,7 @@ export type ProductUpdateData = {
   id: string;
   name?: string;
   description?: string;
-  price?: string;
+  price?: number;
   stock?: number;
   imageUrl?: string;
   categoryId?: string;
@@ -134,6 +134,11 @@ export type Cart = {
   itemCount: number;
 };
 
+export type CartItemData = {
+  productId: string;
+  quantity: number;
+};
+
 //-----------------------------------------------
 // Order
 //-----------------------------------------------
@@ -151,7 +156,7 @@ export type Order = {
 
 export type OrderItem = {
   id: string;
-  order: Order;
+  orderId: string;
   productId: string;
   productName: string;
   unitPrice: string;
@@ -166,3 +171,7 @@ export type OrderListReturn = {
   take: number;
   hasMore: boolean;
 };
+
+export type UpdateOrderData = {
+  status?: string;
+}
