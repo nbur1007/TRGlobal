@@ -67,7 +67,7 @@ This creates:
  
 - One **admin** account — `admin@trglobal.com`, using the password from `SEED_ADMIN_PASSWORD`
 - Four **categories** — Electronics, Clothing, Home & Kitchen, Sports & Outdoors
-- **27 products** spread across the first three categories
+- **33 products** spread across the first three categories
 Sports & Outdoors is intentionally left empty so the category-deletion behaviour can be tested (see *Design Decisions* below).
  
 Seeding must be run explicitly — under Prisma 7 it no longer runs automatically after `migrate dev` or `migrate reset`.
