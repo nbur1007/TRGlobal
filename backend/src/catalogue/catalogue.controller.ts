@@ -60,7 +60,7 @@ export class CatalogueController {
   @Delete('delete-product')
   @Roles(Role.ADMIN)
   @ModerateThrottle()
-  deleteProduct(@Query() productByIdDto: ProductByIdDto) {
+  deleteProduct(@Body() productByIdDto: ProductByIdDto) {
     return this.catalogueService.deleteProduct(productByIdDto);
   }
 
@@ -74,7 +74,7 @@ export class CatalogueController {
   @Delete('delete-category')
   @Roles(Role.ADMIN)
   @ModerateThrottle()
-  deleteCategory(@Query() categoryDto: CategorySelectDto) {
+  deleteCategory(@Body() categoryDto: CategorySelectDto) {
     return this.catalogueService.deleteCategory(categoryDto);
   }
 

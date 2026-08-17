@@ -53,13 +53,13 @@ export class OrderController {
 
   @Patch('update-order-status')
   @Roles(Role.ADMIN)
-  updateOrderStatus(@Query() orderUpdateDto: OrderUpdateDto) {
+  updateOrderStatus(@Body() orderUpdateDto: OrderUpdateDto) {
     return this.orderService.updateOrderStatus(orderUpdateDto);
   }
 
   @Patch('cancel-order')
   @Roles(Role.CUSTOMER)
-  cancelRequest(@Req() req: Request, @Query() findOrderDto: FindOrderDto) {
+  cancelRequest(@Req() req: Request, @Body() findOrderDto: FindOrderDto) {
     const user = req.user as { id: string };
     return this.orderService.cancelRequest(user.id, findOrderDto);
   }
