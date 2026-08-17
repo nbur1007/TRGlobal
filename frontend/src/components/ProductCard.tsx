@@ -6,8 +6,6 @@ type ProductCardProps = {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  
-
   return (
     <article className="product-card">
       <img src={product.imageUrl ?? placeholder} alt={product.name} />
