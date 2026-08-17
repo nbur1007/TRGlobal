@@ -8,6 +8,7 @@ export function Layout() {
         <div className="container">
             <img src={logo} alt="TRGlobal Store" />
         </div>
+        <div className="navcontainer"></div>
       </header>
 
       <main className="app-main">

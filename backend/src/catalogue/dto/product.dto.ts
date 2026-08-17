@@ -22,7 +22,7 @@ export class PaginationDto {
   @IsNumber()
   @IsPositive()
   @Max(100)
-  take: number = 10;
+  take: number = 15;
 }
 
 export class ProductQueryDto extends PaginationDto {

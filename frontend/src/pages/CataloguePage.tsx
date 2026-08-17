@@ -12,7 +12,7 @@ export function CataloguePage() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const skip = Number(searchParams.get('skip') ?? 0);
-  const take = Number(searchParams.get('take') ?? 10);
+  const take = Number(searchParams.get('take') ?? 12);
 
   useEffect(() => {
     setLoading(true);

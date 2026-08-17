@@ -27,7 +27,74 @@
   justify-content: space-around;
 }
 
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
 
+.product-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 16px;
+  transition: box-shadow 0.15s ease;
+}
+
+.product-card:hover {
+  box-shadow: var(--shadow);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  background: var(--bg-subtle);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.product-card h3 {
+  font-size: 1rem;
+  margin: 0 0 4px;
+}
+
+.product-card .price {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-strong);
+  margin: 0 0 4px;
+}
+
+.product-card .stock {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  margin-left: -8px;
+  margin-top: auto;
+}
+
+.product-card .stock::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 100%;
+  flex-shrink: 0;
+}
+
+.product-card .in-stock::before {
+  background: var(--success);
+}
+
+.product-card .out-of-stock::before {
+  background: var(--danger);
+}
 
 /* --- Header -------------------------------------------------------------- */
 .app-header {
