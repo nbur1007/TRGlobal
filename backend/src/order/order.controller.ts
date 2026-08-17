@@ -8,7 +8,7 @@ import { Roles } from '../auth/guards/roles/roles.decorator';
 import { Role } from 'generated/prisma/enums';
 import type { Request } from 'express';
 import { PaginationDto } from '../catalogue/dto/product.dto';
-import { OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
+import { FindOrderDto, OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
 
 @Controller('order')
 export class OrderController {
@@ -59,8 +59,8 @@ export class OrderController {
 
   @Patch('cancel-order')
   @Roles(Role.CUSTOMER)
-  cancelRequest(@Req() req: Request, @Query() orderUpdateDto: OrderUpdateDto) {
+  cancelRequest(@Req() req: Request, @Query() findOrderDto: FindOrderDto) {
     const user = req.user as { id: string };
-    return this.orderService.cancelRequest(user.id, orderUpdateDto);
+    return this.orderService.cancelRequest(user.id, findOrderDto);
   }
 }

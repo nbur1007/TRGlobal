@@ -14,7 +14,11 @@ export function getSelf() {
   return api.get<User>("/user/me");
 }
 
-export function listUsersByRole(role: string, skip: number, take: number) {
+export function listUsersByRole(
+  role: "ADMIN" | "CUSTOMER",
+  skip: number,
+  take: number,
+) {
   return api.get<UserListResponse>("/user/list-by-role", { role, skip, take });
 }
 
@@ -31,5 +35,5 @@ export function deleteSelf() {
 }
 
 export function deleteUser(id: string) {
-  return api.delete<User>("/user/delete-user", { id });
+  return api.delete<User>("/user/delete-user", id);
 }

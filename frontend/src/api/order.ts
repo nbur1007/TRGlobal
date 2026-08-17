@@ -29,6 +29,6 @@ export function updateOrderStatus(newStatus: UpdateOrderData) {
   return api.patch<Order>("/order/update-order-status", newStatus)
 }
 
-export function requestCancel() {
-  return api.patch<Order>("/order/cancel-order");
+export function requestCancel(orderId: string) {
+  return api.patch<Order>("/order/cancel-order", orderId);
 }

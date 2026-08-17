@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
-import { OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
+import { FindOrderDto, OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/client';
 import { fromCents, toCents } from '../utils/money';
 import { OrderStatus } from 'generated/prisma/enums';
@@ -187,7 +187,7 @@ export class OrderService {
     };
   }
 
-  async cancelRequest(userId: string, order: OrderUpdateDto) {
+  async cancelRequest(userId: string, order: FindOrderDto) {
     const result = await this.prismaService.order.updateMany({
       where: {
         id: order.id,
