@@ -24,7 +24,7 @@
   --success: #16a34a;
 
   /* --- Typography ------------------------------------------------------- */
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --sans: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
   /* --- Layout ----------------------------------------------------------- */

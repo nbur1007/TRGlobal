@@ -21,6 +21,14 @@
   padding: 32px 0;
 }
 
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+
+
 /* --- Header -------------------------------------------------------------- */
 .app-header {
   border-bottom: 1px solid var(--border);
