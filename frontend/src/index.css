@@ -126,6 +126,10 @@ button {
   cursor: pointer;
 }
 
+.product-card img {
+    height: 350px;
+}
+
 /* Visible keyboard focus for accessibility */
 :focus-visible {
   outline: 2px solid var(--accent);

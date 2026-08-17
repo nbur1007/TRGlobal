@@ -1,12 +1,15 @@
-import { useEffect } from "react";
-import { api } from "./api/client"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { CataloguePage } from "./pages/CataloguePage"
+import "./App.css"
 
 function App() {
-  useEffect(() => {
-  api.get('/catalogue/list-products')
-    .then(console.log)
-    .catch(console.error);
-  }, []);
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<CataloguePage />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
