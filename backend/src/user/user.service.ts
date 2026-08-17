@@ -43,6 +43,12 @@ export class UserService {
           passwordHash: password,
           cart: { create: {} },
         },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          role: true,
+        },
       });
     } catch (err) {
       throw new InternalServerErrorException(err);
@@ -123,11 +129,11 @@ export class UserService {
   }
 
   async listByRole(listByRoleDto: ListByRoleDto) {
-   const { skip, take } = listByRoleDto;
+    const { skip, take } = listByRoleDto;
 
     const [users, total] = await this.prismaService.$transaction([
       this.prismaService.user.findMany({
-        where: {role: listByRoleDto.role},
+        where: { role: listByRoleDto.role },
         orderBy: { createdAt: 'desc' },
         omit: { passwordHash: true },
         skip,
