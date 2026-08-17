@@ -145,7 +145,7 @@ export type CartItemData = {
 
 export type Order = {
   id: string;
-  status: string;
+  status: 'PENDING' | 'SHIPPED' | 'CANCELLED';
   total: string;
   createdAt: string;
   updatedAt: string;
@@ -173,5 +173,6 @@ export type OrderListReturn = {
 };
 
 export type UpdateOrderData = {
-  status?: string;
+  id: string;
+  status: 'PENDING' | 'SHIPPED' | 'CANCELLED';
 }
