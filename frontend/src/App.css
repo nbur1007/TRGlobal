@@ -96,6 +96,27 @@
   background: var(--danger);
 }
 
+.category-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.category-nav button {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--text);
+}
+
+.category-nav button.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
 /* --- Header -------------------------------------------------------------- */
 .app-header {
   border-bottom: 1px solid var(--border);
@@ -112,9 +133,56 @@
 
 .app-header nav {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 20px;
+  margin-left: auto;
 }
+
+.app-header .logo {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  align-self: self-start;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--accent);
+  font: inherit;
+  cursor: pointer;
+}
+
+.form-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.form-page input {
+  border-radius: 15px;
+  background-color: var(--bg-subtle);
+  border: solid, 1px;
+  border-color: var(--accent);
+  
+}
+
+.user-form {
+  background-color: var(--bg-subtle);
+  border: 1px, solid, var(--border);
+  border-radius: 15px;
+  padding: 10px;
+}
+
+.user-form form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 
 /* --- Footer -------------------------------------------------------------- */
 .app-footer {
@@ -122,6 +190,8 @@
   padding: 24px 0;
   color: var(--text-muted);
   font-size: 0.9rem;
+  display: flex;
+  justify-content: center;
 }
 
 /* --- Mobile -------------------------------------------------------------- */

@@ -2,15 +2,22 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { CataloguePage } from "./pages/CataloguePage";
 import "./App.css";
 import { Layout } from "./components/Layout";
+import { AuthProvider } from "./context/AuthContext";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<CataloguePage />} />
-        </Route>
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<CataloguePage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   );
 }
