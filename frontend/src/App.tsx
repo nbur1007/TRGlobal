@@ -5,7 +5,7 @@ import { Layout } from "./components/Layout";
 import { AuthProvider } from "./context/AuthContext";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
-import { ProductDetails } from "./pages/ProductDetailPage";
+import { ProductDetailPage } from "./pages/ProductDetailPage";
 
 function App() {
   return (
@@ -16,7 +16,7 @@ function App() {
             <Route path="/" element={<CataloguePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/product" element={<ProductDetails />} />
+            <Route path="/product/:id" element={<ProductDetailPage />} />
           </Route>
         </Routes>
       </AuthProvider>
