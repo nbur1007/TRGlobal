@@ -2,10 +2,10 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { createUser } from "../api/user";
 import { useAuth } from "../context/AuthContext";
+import { usePageTitle } from "../hooks/usePageTitle";
 
 export function RegisterPage() {
-  // One state variable per field. These are "controlled inputs" — React
-  // holds the value, the input displays it, onChange keeps them in sync.
+  usePageTitle("Register");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

@@ -48,7 +48,7 @@ async function request<T>(
   const headers: Record<string, string> = {};
 
   if (body !== undefined) {
-    headers['Content-Type'] = 'applications/json';
+    headers['Content-Type'] = 'application/json';
   }
 
   const token = getToken();

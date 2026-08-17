@@ -4,8 +4,10 @@ import { listProducts, listByCategory, listCategories } from '../api/products';
 import type { ProductListResponse, Category } from '../api/types';
 import { ProductCard } from '../components/ProductCard';
 import { Pagination } from '../components/Pagination';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export function CataloguePage() {
+  usePageTitle("Home")
   const [data, setData] = useState<ProductListResponse | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
