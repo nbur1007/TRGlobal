@@ -12,7 +12,7 @@ export function ProductCard({ product }: ProductCardProps) {
     <article className="product-card">
       <img src={product.imageUrl ?? placeholder} alt={product.name} />
       <h3>{product.name}</h3>
-      <p className="price">£{product.price}</p>
+      <p className="price">€{product.price}</p>
       <p className="stock">
         <p
           className={product.stock > 0 ? "stock in-stock" : "stock out-of-stock"}
