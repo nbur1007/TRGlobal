@@ -112,7 +112,7 @@ export function CartPage() {
                     <div className="qty-control">
                       <button
                         onClick={() => adjustQuantity(item, -1)}
-                        disabled={updating || item.quantity <= 1}
+                        disabled={updating}
                         aria-label="Decrease quantity"
                       >
                         −
