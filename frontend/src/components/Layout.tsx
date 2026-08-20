@@ -16,8 +16,8 @@ export function Layout() {
             {loading ? null : user ? (
               <>
                 {user.role === "CUSTOMER" && <Link to="/cart">Cart</Link>}
+                {user.role === "CUSTOMER" && <Link to="/orders">Orders</Link>}
                 {user.role === "ADMIN" && <Link to="/admin">Admin</Link>}
-                <Link to="/orders">Orders</Link>
                 <button onClick={logout} className="link-button">
                   Log out
                 </button>

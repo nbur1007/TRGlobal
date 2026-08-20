@@ -31,7 +31,7 @@ export function ProductDetailPage() {
     try {
       await addToCart({ productId: product.id, quantity });
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Could not add to cart.');
+      setError(err instanceof Error ? err.message : "Could not add to cart.");
     } finally {
       setAdding(false);
     }
@@ -43,29 +43,37 @@ export function ProductDetailPage() {
 
   return (
     <article className="product-page">
-        <img src={product.imageUrl ?? placeholder} alt={product.name} />
+      <title>{product.name}</title>
+      <img src={product.imageUrl ?? placeholder} alt={product.name} />
 
-        <div className="product-info">
+      <div className="product-info">
         <h3>{product.name}</h3>
         <p className="price">£{product.price}</p>
         <p className="description">{product.description}</p>
-        <p className={product.stock > 0 ? 'stock in-stock' : 'stock out-of-stock'}>
-            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+        <p
+          className={
+            product.stock > 0 ? "stock in-stock" : "stock out-of-stock"
+          }
+        >
+          {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
         </p>
 
         <div className="add-to-cart">
-            <input
+          <input
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
             min={1}
             max={product.stock}
-            />
-            <button onClick={handleAddToCart} disabled={adding || product.stock === 0}>
-            {adding ? 'Adding…' : 'Add to Cart'}
-            </button>
+          />
+          <button
+            onClick={handleAddToCart}
+            disabled={adding || product.stock === 0}
+          >
+            {adding ? "Adding…" : "Add to Cart"}
+          </button>
         </div>
-        </div>
+      </div>
     </article>
-    );
+  );
 }
