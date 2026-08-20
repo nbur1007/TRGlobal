@@ -1,9 +1,12 @@
 import { Link, Outlet } from "react-router-dom";
 import logo from "../assets/logo.svg";
 import { useAuth } from "../context/AuthContext";
+import { CartIcon } from "./CartIcon";
+import { useToast } from "../context/ToastContext";
 
 export function Layout() {
   const { user, loading, logout } = useAuth();
+  const { message } = useToast();
   return (
     <div className="app">
       <header className="app-header">
@@ -16,8 +19,19 @@ export function Layout() {
             {loading ? null : user ? (
               <>
                 <Link to="/">Catalogue</Link>
-                {user.role === "CUSTOMER" && <Link to="/cart">Cart</Link>}
-                {user.role === "CUSTOMER" && <Link to="/orders">Orders</Link>}
+                {user.role === "CUSTOMER" && (
+                  <Link to="/orders" style={{ textDecoration: "none" }}>
+                    Orders
+                  </Link>
+                )}
+                {user.role === "CUSTOMER" && (
+                  <div className="cart-link-wrapper">
+                    <Link to="/cart" className="nav-icon-link">
+                      <CartIcon />
+                    </Link>
+                    {message && <div className="toast">{message}</div>}
+                  </div>
+                )}
                 {user.role === "ADMIN" && <Link to="/admin">Admin</Link>}
                 <button onClick={logout} className="link-button">
                   Log out

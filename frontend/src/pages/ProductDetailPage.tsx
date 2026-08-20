@@ -4,6 +4,7 @@ import { getProduct } from "../api/products";
 import type { Product } from "../api/types";
 import placeholder from "../assets/NIA.png";
 import { addToCart } from "../api/cart";
+import { useToast } from "../context/ToastContext";
 
 export function ProductDetailPage() {
   const { id } = useParams();
@@ -13,6 +14,7 @@ export function ProductDetailPage() {
   const [error, setError] = useState<string | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [adding, setAdding] = useState(false);
+  const { showToast } = useToast();
 
   useEffect(() => {
     if (!id) return;
@@ -30,6 +32,7 @@ export function ProductDetailPage() {
     setAdding(true);
     try {
       await addToCart({ productId: product.id, quantity });
+      showToast("Item successfully added to cart!");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not add to cart.");
     } finally {
