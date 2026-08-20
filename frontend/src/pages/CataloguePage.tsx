@@ -78,7 +78,7 @@ export function CataloguePage() {
         ))}
       </nav>
 
-      {loading && <p>Loading…</p>}
+      {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
 
       {!loading && !error && data && data.products.length === 0 && (
@@ -86,7 +86,7 @@ export function CataloguePage() {
       )}
 
       {!loading && !error && data && data.products.length > 0 && (
-        <>
+        <div>
           <div className="product-grid">
             {data.products.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -100,7 +100,7 @@ export function CataloguePage() {
             hasMore={data.hasMore}
             onPageChange={goToPage}
           />
-        </>
+        </div>
       )}
     </div>
   );
