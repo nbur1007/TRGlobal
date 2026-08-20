@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { addToCart, getCart, removeFromCart } from "../api/cart";
 import placeholder from "../assets/NIA.png";
 import { Link } from "react-router-dom";
+import { QuantityInput } from "../components/QuantityInput";
 
 export function CartPage() {
   usePageTitle("Cart");
@@ -31,6 +32,24 @@ export function CartPage() {
           : await removeFromCart({
               productId: item.productId,
               quantity: -difference,
+            });
+      setData(updated);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not update cart.");
+    } finally {
+      setUpdating(false);
+    }
+  }
+
+  async function adjustQuantity(item: CartItem, delta: number) {
+    setUpdating(true);
+    try {
+      const updated =
+        delta > 0
+          ? await addToCart({ productId: item.productId, quantity: delta })
+          : await removeFromCart({
+              productId: item.productId,
+              quantity: -delta,
             });
       setData(updated);
     } catch (err) {
@@ -90,16 +109,27 @@ export function CartPage() {
                   </td>
                   <td>€{item.product.price}</td>
                   <td>
-                    <input
-                      type="number"
-                      defaultValue={item.quantity}
-                      min={1}
-                      disabled={updating}
-                      onChange={(e) =>
-                        changeQuantity(item, Number(e.target.value))
-                      }
-                      className="qty-input"
-                    />
+                    <div className="qty-control">
+                      <button
+                        onClick={() => adjustQuantity(item, -1)}
+                        disabled={updating || item.quantity <= 1}
+                        aria-label="Decrease quantity"
+                      >
+                        −
+                      </button>
+                      <QuantityInput
+                        item={item}
+                        disabled={updating}
+                        onCommit={changeQuantity}
+                      />
+                      <button
+                        onClick={() => adjustQuantity(item, 1)}
+                        disabled={updating}
+                        aria-label="Increase quantity"
+                      >
+                        +
+                      </button>
+                    </div>
                   </td>
                   <td>€{item.lineTotal}</td>
                   <td>

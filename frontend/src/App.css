@@ -117,6 +117,8 @@
   color: var(--accent-contrast);
 }
 
+/* --- Login/Registration -------------------------------------------------- */
+
 .form-page {
   display: flex;
   flex-direction: column;
@@ -306,7 +308,7 @@
   cursor: not-allowed;
 }
 
-/* --- Cart */
+/* --- Cart ---------------------------------------------------------------- */
 .cart-table {
   width: 100%;
   border-collapse: collapse;
@@ -376,26 +378,65 @@
   color: var(--text-strong);
 }
 
-.qty-input {
-  width: 64px;
-  padding: 8px 10px;
+.qty-control {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: var(--bg);
+  padding: 2px;
+}
+
+.qty-input::-webkit-outer-spin-button,
+.qty-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.qty-input {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.qty-control button {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 4px;
+  background: transparent;
   color: var(--text);
-  text-align: center;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-size: 1rem;
+  line-height: 1;
 }
 
-.qty-input:focus {
-  outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+.qty-control button:hover:not(:disabled) {
+  background: var(--bg-subtle);
 }
 
-.qty-input:disabled {
-  opacity: 0.5;
+.qty-control button:disabled {
+  opacity: 0.35;
   cursor: not-allowed;
+}
+
+.qty-control span {
+  min-width: 28px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.checkout-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 8px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+  transition: background 0.15s ease;
+}
+
+.checkout-button:hover:not(:disabled) {
+  background: var(--accent-hover);
+  text-decoration: none;
 }
 
 .remove-button {
