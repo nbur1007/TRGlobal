@@ -24,11 +24,11 @@ cd backend
 npm install
 ```
  
-### 2. Create your environment file
+### 2. Create your environment files
  
 Create a `.env` file in the `backend/` directory:
  
-```env
+```backend/.env
 # PostgreSQL connection string
 DATABASE_URL="postgresql://USER:PASSWORD@HOST:PORT/DATABASE"
  
@@ -37,6 +37,9 @@ JWT_SECRET="your-generated-secret-here"
  
 # Password assigned to the seeded admin account
 SEED_ADMIN_PASSWORD="choose-a-password"
+
+# Address where the frontend is hosted (default below)
+FRONTEND_ADDR='http://localhost:5173'
 ```
  
 `.env` is gitignored and must never be committed.
@@ -46,6 +49,14 @@ To generate a strong `JWT_SECRET`:
 ```bash
 node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 ```
+
+Now create a `.env` file in the `frontend/` directory:
+```frontend/.env
+# Address of the API/Backend (default below)
+API_ADDR='http://localhost:3000'
+```
+
+This `.env` is also gitignored, but doesn't pose a security concern if committed.
  
 ### 3. Run migrations
  
@@ -110,5 +121,6 @@ npm run start:dev
 # Frontend (in a second terminal)
 cd frontend
 npm install
+# ...create .env as described above...
 npm run dev
 ```

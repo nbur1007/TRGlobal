@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = import.meta.env.API_ADDR ?? 'http://localhost:3000';
 
 const TOKEN_KEY = "trglobal_token";
 
