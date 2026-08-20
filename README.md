@@ -5,7 +5,7 @@ A full-stack e-commerce application built with NestJS, Prisma, PostgreSQL, and R
 - `/backend` — NestJS REST API with JWT auth, role-based guards, and Prisma ORM
 - `/frontend` — React + TypeScript client (Vite)
 
-<img src = "./images/TRGlobal.png"/>
+<img src = "./images and writeup/TRGlobal.png"/>
 
 ---
  
