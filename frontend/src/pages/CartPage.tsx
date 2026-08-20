@@ -92,7 +92,7 @@ export function CartPage() {
                   <td>
                     <input
                       type="number"
-                      value={item.quantity}
+                      defaultValue={item.quantity}
                       min={1}
                       disabled={updating}
                       onChange={(e) =>
@@ -123,7 +123,9 @@ export function CartPage() {
             </tfoot>
           </table>
 
-          <Link to="/checkout" className="checkout-button">Checkout</Link>
+          <Link to="/checkout" className="checkout-button">
+            Checkout
+          </Link>
         </div>
       )}
     </div>

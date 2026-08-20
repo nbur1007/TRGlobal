@@ -15,6 +15,7 @@ export function Layout() {
           <nav>
             {loading ? null : user ? (
               <>
+                <Link to="/">Catalogue</Link>
                 {user.role === "CUSTOMER" && <Link to="/cart">Cart</Link>}
                 {user.role === "CUSTOMER" && <Link to="/orders">Orders</Link>}
                 {user.role === "ADMIN" && <Link to="/admin">Admin</Link>}
@@ -24,6 +25,7 @@ export function Layout() {
               </>
             ) : (
               <>
+                <Link to="/">Catalogue</Link>
                 <Link to="/login">Log in</Link>
                 <Link to="/register" className="button-primary">
                   Register

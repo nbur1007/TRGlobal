@@ -71,7 +71,7 @@ export class CartService {
         },
         include: { product: true },
       });
-      return updatedCart;
+      return this.getCart(userId);
     } catch (err) {
       if (err instanceof Prisma.PrismaClientKnownRequestError) {
         if (err.code === 'P2003') {
@@ -109,17 +109,14 @@ export class CartService {
       const quantAfterDecrease = item.quantity - decreaseRequest.quantity;
 
       if (quantAfterDecrease <= 0) {
-        return await this.prismaService.cartItem.delete({
-          where: { id: item.id },
-          include: { product: true },
-        });
+        await this.prismaService.cartItem.delete({ where: { id: item.id } });
       } else {
-        return await this.prismaService.cartItem.update({
+        await this.prismaService.cartItem.update({
           where: { id: item.id },
           data: { quantity: quantAfterDecrease },
-          include: { product: true },
         });
       }
+      return this.getCart(userId);
     } catch (err) {
       throw err;
     }
