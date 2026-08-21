@@ -11,10 +11,12 @@ import { CatalogueModule } from './catalogue/catalogue.module';
 import { CartModule } from './cart/cart.module';
 import { OrderModule } from './order/order.module';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { PrismaModule } from './prisma.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
+    PrismaModule,
     ThrottlerModule.forRoot({
       throttlers: [{ ttl: 60000, limit: 10}]
     }),

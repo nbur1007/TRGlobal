@@ -30,5 +30,5 @@ export function updateOrderStatus(newStatus: UpdateOrderData) {
 }
 
 export function requestCancel(id: string) {
-  return api.patch<Order>("/order/cancel-order", { id });
+  return api.patch<void>("/order/cancel-order", { id });
 }

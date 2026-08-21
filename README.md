@@ -53,7 +53,7 @@ node -e "console.log(require('crypto').randomBytes(48).toString('base64url'))"
 Now create a `.env` file in the `frontend/` directory:
 ```frontend/.env
 # Address of the API/Backend (default below)
-API_ADDR='http://localhost:3000'
+VITE_API_ADDR='http://localhost:3000'
 ```
 
 This `.env` is also gitignored, but doesn't pose a security concern if committed.
@@ -76,7 +76,7 @@ npx prisma db seed
  
 This creates:
  
-- One **admin** account — `admin@trglobal.com`, using the password from `SEED_ADMIN_PASSWORD`
+- One **admin** account — `admin@TRGlobal.com`, using the password from `SEED_ADMIN_PASSWORD`
 - Four **categories** — Electronics, Clothing, Home & Kitchen, Sports & Outdoors
 - **33 products** spread across the first three categories
 Sports & Outdoors is intentionally left empty so the category-deletion behaviour can be tested (see *Design Decisions* below).

@@ -32,21 +32,18 @@ export class UserController {
   @Public()
   @Post('create')
   @StrictThrottle()
-  @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: UserDto) {
     return this.userService.createUser(createUserDto);
   }
 
   @Get('me')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  @UsePipes(ValidationPipe)
   getSelf(@Req() req: Request) {
     const user = req.user as { id: string; email: string; role: Role };
     return this.userService.findUser(user.id);
   }
 
   @Get('list-by-role')
-  @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
   listUsers(@Query() query: ListByRoleDto) {
@@ -54,7 +51,6 @@ export class UserController {
   }
 
   @Get('all-users')
-  @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
   listAll(@Query() paginationDto: PaginationDto) {
@@ -62,7 +58,6 @@ export class UserController {
   }
 
   @Post('create-admin')
-  @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
   createAdmin(@Body() adminCreateUserDto: AdminDto) {
@@ -71,14 +66,12 @@ export class UserController {
 
   @Delete('delete-self')
   @Roles(Role.ADMIN, Role.CUSTOMER)
-  @UsePipes(ValidationPipe)
   deleteSelf(@Req() req: Request) {
     const user = req.user as { id: string; email: string; role: Role };
     return this.userService.deleteUser(user.id);
   }
 
   @Delete('delete-user')
-  @UsePipes(ValidationPipe)
   @Roles(Role.ADMIN)
   @ModerateThrottle()
   deleteUser(@Body() user: DeleteUserDto) {

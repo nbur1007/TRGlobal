@@ -35,5 +35,5 @@ export function deleteSelf() {
 }
 
 export function deleteUser(id: string) {
-  return api.delete<User>("/user/delete-user", id);
+  return api.delete<User>("/user/delete-user", { id });
 }

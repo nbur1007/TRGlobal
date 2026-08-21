@@ -55,6 +55,9 @@ pids
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# Agent tooling — fetched skill content (skills-lock.json stays tracked)
+/.agents/skills/
+
 /src/generated/prisma
 
 /generated/prisma
