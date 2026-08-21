@@ -41,10 +41,10 @@ Decided to go with one category to many products. The implementation of many-to-
 It is forbidden to delete a category that has products within it (throws a `409`). The products must be assigned to another category or removed prior to the deletion of the category. It makes a lot more sense intrinsically to have the possibility of a category without products than products without a category. If anything this would require a catch-all category of uncategorised products. 
 
 ### Order Status Flow:
-asda
+The order status is as follows: PENDING -> SHIPPED or CANCELLED. This is controlled entirely by ADMIN users. I decided that it would be beneficial to make this dependent on the admin while allowing users to make requests to cancel their orders seeing as it may be the case that the order is at a status where it might not be possible to cancel. With this implementation, vetting can be done by administrators.
 
 ### Pagination Style:
-I utilised offset pagination that returns `{ items, total, skip, take, hasMore }`. 
+I utilised offset pagination that returns `{ items, total, skip, take, hasMore }`. This was my first attempt at implementing pagination of any sort, so I decided it would be beneficial to learn the more basic method before exploring cursor based pagination. Additionally, for the scale of data that exists within this project, cursor pagination would have felt like overkill where offset is more than capable.
 
 ### Product Images:
-asda
+Utilised simple image URLs for ease in the generation with the prisma seed. However, on the frontend, I have a placeholder image saved in the event that a product exists with a null imageUrl. For the scale of this project and the implementation required for testing with no real stock, simple URLs seemed like the most straightforward and time efficient approach. I am open to changing this in the future with further admin functionality implementation.
