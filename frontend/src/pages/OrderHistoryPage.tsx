@@ -18,7 +18,7 @@ export function OrderHistoryPage() {
 
   const [searchParams, setSearchParams] = useSearchParams();
   const skip = Number(searchParams.get('skip') ?? 0);
-  const take = Number(searchParams.get('take') ?? 10);
+  const take = Number(searchParams.get('take') ?? 5);
 
   useEffect(() => {
     setLoading(true);
@@ -69,7 +69,7 @@ export function OrderHistoryPage() {
 
   return (
     <div className="order-history">
-      <h1>Your orders</h1>
+      <h1>Orders:</h1>
 
       {loading && <p>Loading…</p>}
       {error && <p className="error">{error}</p>}

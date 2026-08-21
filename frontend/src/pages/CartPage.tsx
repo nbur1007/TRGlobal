@@ -76,6 +76,7 @@ export function CartPage() {
 
   return (
     <div>
+      <h1>Cart</h1>
       {loading && <p>Loading...</p>}
       {error && <p className="error">{error}</p>}
 
