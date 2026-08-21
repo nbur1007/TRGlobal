@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.API_ADDR ?? 'http://localhost:3000';
+const BASE_URL = import.meta.env.API_ADDR ?? "http://localhost:3000";
 
 const TOKEN_KEY = "trglobal_token";
 
@@ -64,7 +64,11 @@ async function request<T>(
 
   if (response.status === 401) {
     clearToken();
-    throw new ApiError("Your session has expired. Please log in again.", 401);
+    const message = await extractErrorMessage(response);
+    throw new ApiError(
+      message || "Your session has expired. Please log in again.",
+      401,
+    );
   }
 
   if (!response.ok) {
