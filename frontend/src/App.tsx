@@ -11,6 +11,7 @@ import { CartPage } from "./pages/CartPage";
 import { OrderHistoryPage } from "./pages/OrderHistoryPage";
 import { AdminPage } from "./pages/AdminPage";
 import { ToastProvider } from "./context/ToastContext";
+import { CheckoutPage } from "./pages/CheckoutPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
               <Route element={<ProtectedRoute />}>
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/order" element={<OrderHistoryPage />} />
+                <Route path="/checkout" element={<CheckoutPage />} />
               </Route>
               <Route element={<ProtectedRoute role="ADMIN" />}>
                 <Route path="/admin" element={<AdminPage />} />
