@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { PaginationDto } from '../catalogue/dto/product.dto';
 import { FindOrderDto, OrderByUserDto, OrderUpdateDto } from './dto/order.dto';
@@ -37,7 +42,7 @@ export class OrderService {
   }
 
   async createOrder(user: string) {
-     try { 
+    try {
       return this.prismaService.$transaction(async (tx) => {
         const cart = await tx.cart.findUnique({
           where: { userId: user },
@@ -91,15 +96,17 @@ export class OrderService {
             total: fromCents(totalCents),
             items: { create: lineItems },
           },
+          include: { items: true },
         });
 
         await tx.cartItem.deleteMany({ where: { cartId: cart.id } });
 
         return order;
       });
-     } catch (err) {
-        throw new InternalServerErrorException('Something went wrong. Our bad...');
-     }
+    } catch (err) {
+      if (err instanceof HttpException) throw err;
+      throw new InternalServerErrorException('Something went wrong... our bad :(');
+    }
   }
 
   async updateOrderStatus(order: OrderUpdateDto) {

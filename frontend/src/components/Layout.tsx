@@ -41,7 +41,7 @@ export function Layout() {
               <>
                 <Link to="/">Catalogue</Link>
                 <Link to="/login">Log in</Link>
-                <Link to="/register" className="button-primary">
+                <Link to="/register" className="link-button">
                   Register
                 </Link>
               </>
