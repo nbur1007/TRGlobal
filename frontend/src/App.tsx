@@ -12,6 +12,7 @@ import { OrderHistoryPage } from "./pages/OrderHistoryPage";
 import { AdminPage } from "./pages/AdminPage";
 import { ToastProvider } from "./context/ToastContext";
 import { CheckoutPage } from "./pages/CheckoutPage";
+import { OrderConfirmationPage } from "./pages/OrderConfirmationPage";
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
                 <Route path="/cart" element={<CartPage />} />
                 <Route path="/order" element={<OrderHistoryPage />} />
                 <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+                <Route path="/orders" element ={<OrderHistoryPage />} />
               </Route>
               <Route element={<ProtectedRoute role="ADMIN" />}>
                 <Route path="/admin" element={<AdminPage />} />
